@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is available
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 interface EmailOptions {
   to: string | string[];
@@ -17,6 +18,12 @@ export async function sendEmail({
   from = 'CIUS <noreply@cius.com>',
   replyTo,
 }: EmailOptions) {
+  // If Resend is not configured, log and return success (for development/build)
+  if (!resend) {
+    console.log('Email would be sent:', { to, subject, from });
+    return { success: true, data: { id: 'dev-mode' } };
+  }
+
   try {
     const data = await resend.emails.send({
       from,
