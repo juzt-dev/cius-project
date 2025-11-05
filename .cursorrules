@@ -1,0 +1,864 @@
+# CIUS Web Application - Development Guidelines for AI Assistants
+
+## 🎯 Project Overview
+
+**Name**: CIUS Web Application  
+**Stack**: Next.js 16 (App Router) + TypeScript + TailwindCSS + Prisma + PostgreSQL  
+**Primary Color**: Orange #F95E1E (HSL: 16 95% 54%)  
+**Theme**: Dark/Light mode with next-themes  
+**Fonts**: Inter (sans-serif) + Geist Mono (monospace)
+
+---
+
+## 📁 Project Structure
+
+```
+cius-web-app/
+├── app/                      # Next.js App Router
+│   ├── (routes)/            # Route groups
+│   ├── api/                 # API routes
+│   ├── layout.tsx           # Root layout
+│   └── page.tsx             # Homepage
+│
+├── components/
+│   ├── animations/          # Animation components (ShimmerButton, ShinyText)
+│   ├── ui/                  # Base UI components (Button, Card, Input)
+│   ├── common/              # Common utilities (theme-toggle)
+│   ├── layout/              # Layout components (Header, Footer)
+│   ├── providers/           # Context providers
+│   └── sections/            # Page sections
+│
+├── lib/
+│   ├── utils.ts             # Utility functions (cn, formatDate, etc.)
+│   ├── prisma.ts            # Prisma client
+│   ├── redis.ts             # Redis client (Upstash)
+│   ├── auth.ts              # NextAuth configuration
+│   ├── email.ts             # Email service (Resend)
+│   ├── cloudinary.ts        # Cloudinary integration
+│   └── constants/           # Constants & design tokens
+│
+├── prisma/
+│   └── schema.prisma        # Database schema
+│
+├── styles/
+│   ├── globals.css          # Global styles + CSS variables
+│   └── animations.css       # CSS animations & keyframes
+│
+├── public/
+│   ├── Logo-Light mode.svg
+│   └── Logo-dark mode.svg
+│
+└── types/                   # TypeScript type definitions
+```
+
+---
+
+## 🎨 Design System
+
+### Colors
+- **Primary**: `hsl(16 95% 54%)` - Orange #F95E1E
+- **Primary Scale**: 50-950 (defined in tailwind.config.ts)
+- **Semantic Colors**: success, error, warning, destructive
+- **Theme Colors**: Via CSS variables (--background, --foreground, --primary, etc.)
+
+### Typography
+```typescript
+// Font imports (app/layout.tsx)
+import { Inter } from 'next/font/google';
+import { GeistMono } from 'geist/font/mono';
+
+// Usage
+font-sans    // Inter
+font-mono    // Geist Mono
+```
+
+### Border Radius
+- Default: `rounded-full` cho buttons
+- Cards: `rounded-lg`
+- Inputs: `rounded-lg`
+
+### Spacing
+- Container padding: `px-4` (mobile), `px-6` (desktop)
+- Section spacing: `py-16` hoặc `py-20`
+
+---
+
+## 💻 Code Standards
+
+### TypeScript
+
+**✅ DO:**
+```typescript
+// Use explicit types for props
+interface ButtonProps {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  children: React.ReactNode;
+}
+
+// Use React.FC or explicit function types
+export const Button: React.FC<ButtonProps> = ({ variant = 'primary', ...props }) => {
+  // ...
+};
+
+// Export types when needed
+export type { ButtonProps };
+```
+
+**❌ DON'T:**
+```typescript
+// No implicit any
+function handleClick(data) { } // ❌
+
+// No unused variables
+const unused = 'test'; // ❌
+
+// No default exports for components
+export default function Button() { } // ❌ (except for pages)
+```
+
+### React Components
+
+**Structure:**
+```typescript
+// 1. Imports (grouped)
+import React from 'react';
+import { cn } from '@/lib/utils';
+
+// 2. Types/Interfaces
+interface ComponentProps {
+  // ...
+}
+
+// 3. Component
+export const Component: React.FC<ComponentProps> = ({ 
+  prop1,
+  prop2,
+  className,
+}) => {
+  // 4. Hooks
+  const [state, setState] = useState();
+  
+  // 5. Handlers
+  const handleClick = () => {};
+  
+  // 6. Effects
+  useEffect(() => {}, []);
+  
+  // 7. Render
+  return (
+    <div className={cn('base-classes', className)}>
+      {/* ... */}
+    </div>
+  );
+};
+```
+
+**Naming:**
+- Components: `PascalCase` (Button, ShimmerButton)
+- Files: Match component name (Button.tsx, ShimmerButton.tsx)
+- Hooks: `useCamelCase` (useTheme, useAuth)
+- Utils: `camelCase` (formatDate, cn)
+- Constants: `UPPER_SNAKE_CASE` (API_URL, MAX_RETRIES)
+
+### CSS & Styling
+
+**Tailwind First:**
+```typescript
+// ✅ Prefer Tailwind
+<button className="px-4 py-2 bg-primary text-primary-foreground rounded-full">
+
+// ❌ Avoid inline styles
+<button style={{ padding: '8px 16px' }}>
+```
+
+**Class Composition:**
+```typescript
+import { cn } from '@/lib/utils';
+
+// Use cn() for conditional classes
+<div className={cn(
+  'base-class',
+  isActive && 'active-class',
+  className
+)} />
+```
+
+**CSS Variables:**
+```css
+/* Use HSL for theme colors */
+--primary: 16 95% 54%;
+
+/* Usage in Tailwind */
+bg-primary  // bg-[hsl(var(--primary))]
+```
+
+---
+
+## 📦 Component Guidelines
+
+### UI Components (`components/ui/`)
+
+**Purpose**: Base, reusable UI components  
+**Characteristics**: 
+- No business logic
+- Highly composable
+- Simple styling with variants
+- Props-driven behavior
+
+**Example:**
+```typescript
+// components/ui/Button.tsx
+import { cva, type VariantProps } from 'class-variance-authority';
+
+const buttonVariants = cva(
+  'inline-flex items-center justify-center rounded-full',
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-primary-foreground',
+        outline: 'border border-border',
+      },
+      size: {
+        default: 'h-10 px-4 py-2',
+        sm: 'h-9 px-3',
+        lg: 'h-11 px-8',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
+
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+
+Button.displayName = 'Button';
+```
+
+**Export Pattern:**
+```typescript
+// components/ui/index.ts
+export { Button, type ButtonProps } from './Button';
+export { Card, type CardProps } from './Card';
+export { Input, type InputProps } from './Input';
+```
+
+### Animation Components (`components/animations/`)
+
+**Purpose**: Components with complex animations/effects  
+**Characteristics**:
+- Has custom CSS keyframes
+- Multiple animation layers
+- Reusable across project
+- Performance-optimized
+
+**When to use this folder:**
+- ✅ Complex animations (ShimmerButton, ParallaxSection)
+- ✅ Custom CSS keyframes required
+- ✅ Multiple animation layers
+- ❌ Simple transitions (use Tailwind `transition`)
+- ❌ Basic UI components
+
+**Requirements:**
+1. Add CSS keyframes to `styles/animations.css`
+2. Export through `components/animations/index.ts`
+3. Document in `components/animations/README.md`
+4. Use `transform-gpu` for performance
+
+**Example:**
+```typescript
+// components/animations/ShimmerButton.tsx
+export interface ShimmerButtonProps {
+  shimmerColor?: string;
+  shimmerDuration?: string;
+  // ...
+}
+
+export const ShimmerButton: React.FC<ShimmerButtonProps> = ({
+  shimmerColor = '#ffffff',
+  shimmerDuration = '3s',
+  className,
+  children,
+}) => {
+  return (
+    <button
+      className={cn(
+        'group relative transform-gpu',
+        'animate-shimmer-slide',
+        className
+      )}
+      style={{
+        '--shimmer-color': shimmerColor,
+        '--speed': shimmerDuration,
+      } as React.CSSProperties}
+    >
+      {children}
+    </button>
+  );
+};
+```
+
+### Layout Components (`components/layout/`)
+
+**Purpose**: Page layout components (Header, Footer, Sidebar)  
+**Characteristics**:
+- Position/structure focused
+- Contain navigation logic
+- Theme-aware (logo switching)
+
+### Common Components (`components/common/`)
+
+**Purpose**: Shared utilities (theme-toggle, loading, error)  
+**Characteristics**:
+- Cross-cutting concerns
+- Not pure UI components
+- Often stateful
+
+---
+
+## 🎭 Animation Best Practices
+
+### CSS Keyframes Location
+
+**`styles/animations.css`** - All keyframe definitions
+```css
+/* Shimmer Button Animations */
+@keyframes shimmer-slide {
+  to { translate: calc(100cqw - 100%) 0; }
+}
+
+@keyframes spin-around {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+```
+
+**`tailwind.config.ts`** - Simple Tailwind animations
+```typescript
+keyframes: {
+  shine: {
+    '0%': { 'background-position': '100%' },
+    '100%': { 'background-position': '-100%' },
+  },
+},
+animation: {
+  shine: 'shine 5s linear infinite',
+}
+```
+
+### Performance
+
+**✅ DO:**
+```css
+/* GPU-accelerated properties */
+transform: translateX(100px);
+opacity: 0.5;
+
+/* Add transform-gpu class */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+```
+
+**❌ DON'T:**
+```css
+/* Avoid properties that trigger reflow */
+left: 100px;      /* ❌ */
+width: 200px;     /* ❌ */
+height: 100px;    /* ❌ */
+top: 50px;        /* ❌ */
+```
+
+### Accessibility
+```css
+/* Always include reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+---
+
+## 🔧 Utilities & Helpers
+
+### `lib/utils.ts`
+
+**Available utilities:**
+- `cn()` - Class name composition (clsx wrapper)
+- `formatDate()` - Date formatting
+- `slugify()` - URL-safe strings
+- `truncate()` - Text truncation
+- `debounce()` - Debounce functions
+- `throttle()` - Throttle functions
+- `fetcher()` - Type-safe fetch wrapper
+
+**Usage:**
+```typescript
+import { cn, formatDate, slugify } from '@/lib/utils';
+
+// Class composition
+<div className={cn('base', isActive && 'active', className)} />
+
+// Date formatting
+const formatted = formatDate(new Date()); // "November 5, 2025"
+
+// Slugify
+const slug = slugify('Hello World!'); // "hello-world"
+```
+
+---
+
+## 🗄️ Database & API
+
+### Prisma
+
+**Schema location**: `prisma/schema.prisma`
+
+**Commands:**
+```bash
+pnpm prisma:generate  # Generate Prisma Client
+pnpm prisma:push      # Push schema to DB
+pnpm prisma:studio    # Open Prisma Studio
+```
+
+**Usage:**
+```typescript
+import { prisma } from '@/lib/prisma';
+
+// Always use try-catch
+try {
+  const users = await prisma.user.findMany();
+} catch (error) {
+  console.error('Database error:', error);
+}
+```
+
+### API Routes
+
+**Location**: `app/api/[route]/route.ts`
+
+**Structure:**
+```typescript
+// app/api/example/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+// Define schema
+const schema = z.object({
+  email: z.string().email(),
+  name: z.string().min(2),
+});
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    
+    // Validate
+    const validated = schema.parse(body);
+    
+    // Process
+    // ...
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Invalid request' },
+      { status: 400 }
+    );
+  }
+}
+```
+
+### Redis (Upstash)
+
+```typescript
+import { redis } from '@/lib/redis';
+
+// Set with expiration
+await redis.set('key', 'value', { ex: 3600 });
+
+// Get
+const value = await redis.get('key');
+
+// Delete
+await redis.del('key');
+```
+
+---
+
+## 🎨 Styling Conventions
+
+### Responsive Design
+
+```typescript
+// Mobile-first approach
+<div className="
+  px-4              // mobile
+  md:px-6           // tablet
+  lg:px-8           // desktop
+  xl:px-12          // large desktop
+">
+```
+
+### Dark Mode
+
+**Check theme:**
+```typescript
+import { useTheme } from 'next-themes';
+
+const { theme, resolvedTheme } = useTheme();
+```
+
+**Theme-aware assets:**
+```typescript
+<Image
+  src={resolvedTheme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg'}
+  alt="Logo"
+/>
+```
+
+**CSS classes:**
+```typescript
+<div className="bg-background text-foreground dark:bg-background-dark">
+```
+
+---
+
+## 📝 File Naming Conventions
+
+### Components
+- `PascalCase.tsx` - Button.tsx, ShimmerButton.tsx
+- Match component name exactly
+- One component per file (except for tightly coupled sub-components)
+
+### Utilities
+- `kebab-case.ts` - design-tokens.ts, api-client.ts
+- Or `camelCase.ts` - prisma.ts, utils.ts
+
+### Pages (App Router)
+- `page.tsx` - Route page
+- `layout.tsx` - Layout wrapper
+- `route.ts` - API route
+- `loading.tsx` - Loading state
+- `error.tsx` - Error boundary
+
+### Folders
+- `kebab-case/` - multi-word folders
+- `lowercase/` - single word folders
+
+---
+
+## 🚀 Import Organization
+
+**Order:**
+```typescript
+// 1. React & Next.js
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+// 2. External libraries
+import { useTheme } from 'next-themes';
+import { cva } from 'class-variance-authority';
+
+// 3. Internal - Components
+import { Button } from '@/components/ui';
+import { ShimmerButton } from '@/components/animations';
+
+// 4. Internal - Utilities
+import { cn } from '@/lib/utils';
+import { prisma } from '@/lib/prisma';
+
+// 5. Types
+import type { ButtonProps } from '@/components/ui';
+
+// 6. Styles (if needed)
+import styles from './Component.module.css';
+```
+
+**Aliases:**
+- Use `@/` for absolute imports
+- `@/components/` - Components
+- `@/lib/` - Libraries & utilities
+- `@/app/` - App directory
+- `@/styles/` - Styles
+
+---
+
+## ✅ Code Quality Checklist
+
+Before committing, ensure:
+
+### TypeScript
+- [ ] No `any` types (use `unknown` if needed)
+- [ ] All props have explicit types
+- [ ] Exported types for public APIs
+- [ ] No unused variables/imports
+
+### React
+- [ ] Components are properly memoized (if needed)
+- [ ] No inline function definitions in JSX (for frequently re-rendering components)
+- [ ] Keys on mapped elements
+- [ ] Proper dependency arrays in hooks
+
+### Styling
+- [ ] Use `cn()` for class composition
+- [ ] Responsive classes follow mobile-first
+- [ ] Dark mode support added
+- [ ] Accessibility attributes (aria-*, role)
+
+### Performance
+- [ ] Images use Next.js `<Image>` component
+- [ ] Animations use `transform-gpu`
+- [ ] Heavy operations are debounced/throttled
+- [ ] API calls are cached (if applicable)
+
+### Documentation
+- [ ] Complex logic has comments
+- [ ] Props are documented (JSDoc if needed)
+- [ ] README updated (if adding new features)
+
+---
+
+## 🎯 Common Patterns
+
+### Server Components (Default)
+```typescript
+// app/page.tsx
+export default async function Page() {
+  const data = await fetch('https://api.example.com/data');
+  return <div>...</div>;
+}
+```
+
+### Client Components
+```typescript
+'use client';
+
+import { useState } from 'react';
+
+export function ClientComponent() {
+  const [state, setState] = useState();
+  return <div>...</div>;
+}
+```
+
+### Form Handling
+```typescript
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const schema = z.object({
+  email: z.string().email(),
+});
+
+type FormData = z.infer<typeof schema>;
+
+export function Form() {
+  const { register, handleSubmit } = useForm<FormData>();
+  
+  const onSubmit = async (data: FormData) => {
+    const validated = schema.parse(data);
+    // ...
+  };
+  
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('email')} />
+    </form>
+  );
+}
+```
+
+### Error Handling
+```typescript
+try {
+  const result = await apiCall();
+  return result;
+} catch (error) {
+  console.error('Error:', error);
+  throw new Error('Failed to process request');
+}
+```
+
+---
+
+## 🔍 Testing
+
+### File naming
+- `Component.test.tsx` - Component tests
+- `utils.test.ts` - Utility tests
+
+### Test structure
+```typescript
+import { render, screen } from '@testing-library/react';
+import { Button } from './Button';
+
+describe('Button', () => {
+  it('renders children correctly', () => {
+    render(<Button>Click me</Button>);
+    expect(screen.getByText('Click me')).toBeInTheDocument();
+  });
+});
+```
+
+---
+
+## 📚 Documentation
+
+### Component Documentation
+```typescript
+/**
+ * ShimmerButton component with animated shimmer effect
+ * 
+ * @example
+ * ```tsx
+ * <ShimmerButton shimmerColor="#ffffff" shimmerDuration="2s">
+ *   Click me
+ * </ShimmerButton>
+ * ```
+ * 
+ * @see components/animations/README.md for more details
+ */
+export const ShimmerButton: React.FC<ShimmerButtonProps> = ({ ... }) => {
+  // ...
+};
+```
+
+### Complex Logic Documentation
+```typescript
+/**
+ * Calculates the optimal image dimensions based on viewport size
+ * Uses a responsive scaling algorithm to maintain aspect ratio
+ * 
+ * @param width - Original image width
+ * @param height - Original image height
+ * @param maxWidth - Maximum allowed width
+ * @returns Scaled dimensions object
+ */
+function calculateDimensions(width: number, height: number, maxWidth: number) {
+  // ...
+}
+```
+
+---
+
+## 🚫 Anti-Patterns to Avoid
+
+### Don't
+```typescript
+// ❌ Default exports for components (except pages)
+export default function Button() {}
+
+// ❌ Inline styles
+<div style={{ color: 'red' }}>
+
+// ❌ Any types
+function handleData(data: any) {}
+
+// ❌ Direct DOM manipulation
+document.getElementById('element').style.color = 'red';
+
+// ❌ Unused imports
+import { useState } from 'react'; // but never use it
+
+// ❌ Magic numbers
+setTimeout(callback, 3000); // What is 3000?
+
+// ❌ Deeply nested ternaries
+{isActive ? isMobile ? 'active-mobile' : 'active-desktop' : 'inactive'}
+```
+
+### Do
+```typescript
+// ✅ Named exports
+export const Button = () => {}
+
+// ✅ Tailwind classes
+<div className="text-red-500">
+
+// ✅ Explicit types
+function handleData(data: UserData) {}
+
+// ✅ React state management
+const [color, setColor] = useState('red');
+
+// ✅ Clean imports (remove unused)
+// Only import what you use
+
+// ✅ Named constants
+const DEBOUNCE_DELAY = 3000;
+setTimeout(callback, DEBOUNCE_DELAY);
+
+// ✅ Early returns or helper functions
+const getClassName = () => {
+  if (!isActive) return 'inactive';
+  return isMobile ? 'active-mobile' : 'active-desktop';
+};
+```
+
+---
+
+## 🎓 Learning Resources
+
+### Project-specific
+- `ANIMATION_GUIDE.md` - Animation system overview
+- `components/animations/README.md` - Animation components
+- `PROJECT_SUMMARY.md` - Project summary
+
+### External
+- [Next.js Docs](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [TypeScript](https://www.typescriptlang.org/docs)
+- [Prisma](https://www.prisma.io/docs)
+
+---
+
+## 🤝 AI Assistant Guidelines
+
+When generating code:
+
+1. **Follow the project structure** - Place files in correct folders
+2. **Use existing patterns** - Check similar components first
+3. **Import from index files** - `from '@/components/animations'` not `'@/components/animations/ShimmerButton'`
+4. **Include types** - Always define TypeScript interfaces
+5. **Add comments** - For complex logic
+6. **Consider performance** - Use appropriate optimization techniques
+7. **Think accessibility** - Include ARIA attributes
+8. **Support dark mode** - Use theme-aware classes/logic
+9. **Mobile-first** - Responsive design from the start
+10. **Ask before major changes** - Confirm architecture decisions
+
+### When in doubt:
+- Check existing similar components
+- Follow the conventions in this file
+- Ask for clarification
+
+---
+
+**Last Updated**: November 5, 2025  
+**Maintained by**: Development Team  
+**Version**: 1.0.0

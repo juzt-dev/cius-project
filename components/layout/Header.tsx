@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { ThemeToggle } from '@/components/common/theme-toggle';
-import { ShimmerButton } from '@/components/ui/ShimmerButton';
+import { ShimmerButton, ShinyText } from '@/components/animations';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,8 +60,9 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Right Side: Get Report Button + Theme Toggle + Mobile Menu */}
+          {/* Right Side: Theme Toggle + Get Report Button + Mobile Menu */}
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Link href="/report" className="hidden md:inline-flex">
               <ShimmerButton
                 shimmerColor="#ffffff"
@@ -71,10 +72,9 @@ export default function Header() {
                 background="hsl(var(--primary))"
                 className="px-4 py-2 text-sm font-medium"
               >
-                Get Report
+                <ShinyText text="Get Report" speed={3} />
               </ShimmerButton>
             </Link>
-            <ThemeToggle />
 
             {/* Mobile Menu Button */}
             <button
@@ -125,7 +125,7 @@ export default function Header() {
                 background="hsl(var(--primary))"
                 className="w-full px-4 py-2 text-sm font-medium text-center"
               >
-                Get Report
+                <ShinyText text="Get Report" speed={3} />
               </ShimmerButton>
             </Link>
           </nav>
