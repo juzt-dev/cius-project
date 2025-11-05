@@ -29,6 +29,17 @@ const config: Config = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
+          50: '#FFF4ED',
+          100: '#FFE6D5',
+          200: '#FFC9AA',
+          300: '#FFA574',
+          400: '#FF7A3C',
+          500: '#F95E1E',
+          600: '#E04510',
+          700: '#B9330F',
+          800: '#942C14',
+          900: '#7A2814',
+          950: '#421109',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -73,7 +84,7 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
       },
       keyframes: {

@@ -19,13 +19,13 @@ export default function HomePage() {
         <div className="flex gap-4">
           <a
             href="/product"
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+            className="px-6 py-3 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
           >
             Explore Products
           </a>
           <a
             href="/contact"
-            className="px-6 py-3 border border-border rounded-lg hover:bg-muted transition-colors"
+            className="px-6 py-3 border border-border rounded-full hover:bg-muted transition-colors"
           >
             Contact Us
           </a>

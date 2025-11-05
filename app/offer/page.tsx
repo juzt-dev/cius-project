@@ -16,7 +16,7 @@ export default function OfferPage() {
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-8 text-white mb-8">
         <h2 className="text-3xl font-bold mb-4">Limited Time Offer!</h2>
         <p className="text-lg mb-4">Get 30% off on all enterprise packages</p>
-        <button className="px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors">
+        <button className="px-6 py-3 bg-white text-blue-600 rounded-full hover:bg-gray-100 transition-colors">
           Claim Offer
         </button>
       </div>

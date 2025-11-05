@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 217 91% 60%;
+    --primary: 16 95% 54%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -31,7 +31,7 @@
 
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 217 91% 60%;
+    --ring: 16 95% 54%;
 
     --radius: 0.5rem;
   }
@@ -47,8 +47,8 @@
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 10%;
+    --primary: 16 95% 54%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 15%;
     --secondary-foreground: 0 0% 98%;
@@ -64,7 +64,7 @@
 
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 217 91% 60%;
+    --ring: 16 95% 54%;
   }
 }
 
@@ -73,8 +73,12 @@
     @apply border-border;
   }
 
+  html,
   body {
     @apply bg-background text-foreground;
+  }
+
+  body {
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
@@ -114,6 +118,59 @@
   @apply bg-border/80;
 }
 
+/* Button Effects */
+@layer components {
+  /* Shimmer Effect */
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-shimmer:hover::before {
+    left: 100%;
+  }
+
+  /* Magnetic Hover Effect */
+  @keyframes magnetic-hover {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(2px, -2px);
+    }
+    50% {
+      transform: translate(-2px, 2px);
+    }
+    75% {
+      transform: translate(2px, 2px);
+    }
+  }
+
+  .btn-magnetic {
+    transition: transform 0.2s ease;
+  }
+
+  .btn-magnetic:hover {
+    animation: magnetic-hover 0.3s ease-in-out;
+  }
+
+  .btn-magnetic:active {
+    transform: scale(0.95);
+  }
+}
+
 /* Utilities */
 @layer utilities {
   .text-balance {
@@ -124,4 +181,28 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
+}
+
+/* ShimmerButton Animations */
+@keyframes shimmer-slide {
+  to {
+    translate: calc(100cqw - 100%) 0;
+  }
+}
+
+@keyframes spin-around {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-shimmer-slide {
+  animation: shimmer-slide var(--speed) ease-in-out infinite alternate;
+}
+
+.animate-spin-around {
+  animation: spin-around calc(var(--speed) * 2) linear infinite;
 }

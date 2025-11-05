@@ -22,7 +22,7 @@ export default function CareersPage() {
             >
               <h3 className="text-xl font-semibold mb-2">{position}</h3>
               <p className="text-muted-foreground mb-4">Full-time • Remote</p>
-              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity">
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity">
                 Apply Now
               </button>
             </div>

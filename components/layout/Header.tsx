@@ -1,13 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import { ThemeToggle } from '@/components/common/theme-toggle';
+import { ShimmerButton } from '@/components/ui/ShimmerButton';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before accessing theme
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = [
-    { name: 'Product', href: '/product' },
+    { name: 'Products', href: '/product' },
     { name: 'Offers', href: '/offer' },
     { name: 'About', href: '/about' },
     { name: 'Careers', href: '/careers' },
@@ -21,7 +32,19 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-primary">CIUS</div>
+            {mounted ? (
+              <Image
+                src={resolvedTheme === 'dark' ? '/Logo-dark mode.svg' : '/Logo-Light mode.svg'}
+                alt="CIUSLABS Logo"
+                width={140}
+                height={40}
+                className="h-7 w-auto"
+                priority
+              />
+            ) : (
+              // Placeholder during SSR to prevent layout shift
+              <div className="h-7 w-[140px]" />
+            )}
           </Link>
 
           {/* Desktop Navigation */}
@@ -35,38 +58,49 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Link
-              href="/report"
-              className="ml-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-            >
-              Get Report
-            </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+          {/* Right Side: Get Report Button + Theme Toggle + Mobile Menu */}
+          <div className="flex items-center gap-3">
+            <Link href="/report" className="hidden md:inline-flex">
+              <ShimmerButton
+                shimmerColor="#ffffff"
+                shimmerSize="0.1em"
+                borderRadius="100px"
+                shimmerDuration="2s"
+                background="hsl(var(--primary))"
+                className="px-4 py-2 text-sm font-medium"
+              >
+                Get Report
+              </ShimmerButton>
+            </Link>
+            <ThemeToggle />
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -82,12 +116,17 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Link
-              href="/report"
-              className="block mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium text-center hover:opacity-90 transition-opacity"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Get Report
+            <Link href="/report" className="block mt-4" onClick={() => setIsMenuOpen(false)}>
+              <ShimmerButton
+                shimmerColor="#ffffff"
+                shimmerSize="0.1em"
+                borderRadius="100px"
+                shimmerDuration="2s"
+                background="hsl(var(--primary))"
+                className="w-full px-4 py-2 text-sm font-medium text-center"
+              >
+                Get Report
+              </ShimmerButton>
             </Link>
           </nav>
         )}
