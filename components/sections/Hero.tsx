@@ -80,7 +80,7 @@ export function Hero() {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+            <div className="flex flex-row items-center justify-center gap-2">
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 h-10 px-5 rounded-full text-sm font-medium bg-primary/80 backdrop-blur-md text-primary-foreground hover:bg-primary hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 shadow-[inset_0_1px_4px_rgba(255,255,255,0.25),inset_0_-1px_4px_rgba(0,0,0,0.15)]"
