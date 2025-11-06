@@ -59,12 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       }}
     >
       <body className="font-sans antialiased bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <ScrollProgress />
           <Header />
           <main className="min-h-screen">{children}</main>
