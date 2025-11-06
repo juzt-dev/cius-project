@@ -120,55 +120,78 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation with Backdrop */}
         {isMenuOpen && (
-          <nav className="absolute left-0 right-0 top-full md:hidden backdrop-blur-xl bg-background/90 border-b border-border shadow-lg">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex flex-col items-center justify-center space-y-1">
-                {navItems.map((item) => {
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        'block py-2 px-4 text-sm font-medium transition-colors hover:text-primary relative text-center',
-                        isActive ? 'text-primary font-semibold' : 'text-foreground'
-                      )}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.name}
-                      {isActive && (
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-primary rounded-r-full" />
-                      )}
+          <>
+            {/* Backdrop Overlay */}
+            <div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-300"
+              onClick={() => setIsMenuOpen(false)}
+            />
+
+            {/* Mobile Menu */}
+            <nav className="fixed left-0 right-0 top-16 md:hidden z-50 animate-in slide-in-from-top-4 duration-300">
+              <div className="mx-4 mt-2 rounded-2xl border border-border/50 bg-background/95 backdrop-blur-2xl shadow-2xl overflow-hidden">
+                <div className="px-4 py-6">
+                  <div className="flex flex-col space-y-1">
+                    {navItems.map((item, index) => {
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={cn(
+                            'group relative py-3 px-4 rounded-xl text-base font-medium transition-all duration-200',
+                            'hover:bg-primary/10 hover:pl-6',
+                            isActive
+                              ? 'text-primary bg-primary/10 font-semibold'
+                              : 'text-foreground'
+                          )}
+                          onClick={() => setIsMenuOpen(false)}
+                          style={{
+                            animationDelay: `${index * 50}ms`,
+                          }}
+                        >
+                          {/* Active Indicator */}
+                          {isActive && (
+                            <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-full" />
+                          )}
+
+                          {/* Hover Indicator */}
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-full opacity-0 group-hover:opacity-50 transition-opacity" />
+
+                          {item.name}
+                        </Link>
+                      );
+                    })}
+
+                    {/* Divider */}
+                    <div className="my-3 h-px bg-border/50" />
+
+                    {/* CTA Button */}
+                    <Link href="/report" className="block" onClick={() => setIsMenuOpen(false)}>
+                      <ShimmerButton
+                        shimmerColor="#ffffff"
+                        shimmerSize="0.1em"
+                        borderRadius="12px"
+                        shimmerDuration="2s"
+                        background="hsl(var(--primary))"
+                        className="w-full px-4 py-3 text-base font-medium flex items-center justify-center gap-2"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                      >
+                        <ShinyText text="Get Report" speed={2} disabled={!isHovered} />
+                        <Download
+                          className="w-4 h-4 !text-black transition-transform duration-200"
+                          strokeWidth={2.5}
+                        />
+                      </ShimmerButton>
                     </Link>
-                  );
-                })}
-                <Link
-                  href="/report"
-                  className="block mt-4 w-full max-w-xs"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <ShimmerButton
-                    shimmerColor="#ffffff"
-                    shimmerSize="0.1em"
-                    borderRadius="100px"
-                    shimmerDuration="2s"
-                    background="hsl(var(--primary))"
-                    className="w-full px-4 py-2 text-sm font-medium text-center flex items-center justify-center gap-2"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  >
-                    <ShinyText text="Get Report" speed={2} disabled={!isHovered} />
-                    <Download
-                      className={`w-4 h-4 !text-black transition-transform duration-100 ${isHovered ? 'translate-y-0.01' : ''}`}
-                      strokeWidth={2.5}
-                    />
-                  </ShimmerButton>
-                </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          </nav>
+            </nav>
+          </>
         )}
       </div>
     </header>
