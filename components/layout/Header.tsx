@@ -122,44 +122,52 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
+          <nav className="absolute left-0 right-0 top-full md:hidden backdrop-blur-xl bg-background/90 border-b border-border shadow-lg">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex flex-col items-center justify-center space-y-1">
+                {navItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        'block py-2 px-4 text-sm font-medium transition-colors hover:text-primary relative text-center',
+                        isActive ? 'text-primary font-semibold' : 'text-foreground'
+                      )}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                      {isActive && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-primary rounded-r-full" />
+                      )}
+                    </Link>
+                  );
+                })}
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'block py-2 text-sm font-medium transition-colors hover:text-primary relative',
-                    isActive ? 'text-primary font-semibold' : 'text-foreground'
-                  )}
+                  href="/report"
+                  className="block mt-4 w-full max-w-xs"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.name}
-                  {isActive && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-primary rounded-r-full" />
-                  )}
+                  <ShimmerButton
+                    shimmerColor="#ffffff"
+                    shimmerSize="0.1em"
+                    borderRadius="100px"
+                    shimmerDuration="2s"
+                    background="hsl(var(--primary))"
+                    className="w-full px-4 py-2 text-sm font-medium text-center flex items-center justify-center gap-2"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    <ShinyText text="Get Report" speed={2} disabled={!isHovered} />
+                    <Download
+                      className={`w-4 h-4 !text-black transition-transform duration-100 ${isHovered ? 'translate-y-0.01' : ''}`}
+                      strokeWidth={2.5}
+                    />
+                  </ShimmerButton>
                 </Link>
-              );
-            })}
-            <Link href="/report" className="block mt-4" onClick={() => setIsMenuOpen(false)}>
-              <ShimmerButton
-                shimmerColor="#ffffff"
-                shimmerSize="0.1em"
-                borderRadius="100px"
-                shimmerDuration="2s"
-                background="hsl(var(--primary))"
-                className="w-full px-4 py-2 text-sm font-medium text-center flex items-center justify-center gap-2"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <ShinyText text="Get Report" speed={2} disabled={!isHovered} />
-                <Download
-                  className={`w-4 h-4 !text-black transition-transform duration-100 ${isHovered ? 'translate-y-0.01' : ''}`}
-                  strokeWidth={2.5}
-                />
-              </ShimmerButton>
-            </Link>
+              </div>
+            </div>
           </nav>
         )}
       </div>

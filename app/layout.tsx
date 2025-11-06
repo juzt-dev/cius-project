@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter, Manrope, Instrument_Serif } from 'next/font/google';
 import { GeistMono } from 'geist/font/mono';
 import '../styles/globals.css';
 import { Header, Footer } from '@/components/layout';
@@ -12,10 +12,17 @@ const inter = Inter({
   display: 'swap',
 });
 
-const poppins = Poppins({
+const manrope = Manrope({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  variable: '--font-poppins',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-manrope',
+  display: 'swap',
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-instrument-serif',
   display: 'swap',
 });
 
@@ -51,10 +58,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${poppins.variable} ${GeistMono.variable}`}
+      className={`${inter.variable} ${manrope.variable} ${instrumentSerif.variable} ${GeistMono.variable}`}
       style={{
         ['--font-inter' as string]: inter.style.fontFamily,
-        ['--font-poppins' as string]: poppins.style.fontFamily,
+        ['--font-manrope' as string]: manrope.style.fontFamily,
+        ['--font-instrument-serif' as string]: instrumentSerif.style.fontFamily,
         ['--font-geist-mono' as string]: GeistMono.style.fontFamily,
       }}
     >

@@ -53,37 +53,51 @@ export function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-[10] container mx-auto px-6 py-12 md:py-16">
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-12 lg:col-span-10 lg:col-start-2 xl:col-span-8 xl:col-start-3 text-center">
+      <div className="relative z-[10] w-full px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col items-center text-center">
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-6 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 mb-4 sm:mb-6 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-xs sm:text-sm">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-primary" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
-              <span className="text-xs font-medium text-white">From Design · To Development</span>
+              <span className="text-gray-300 font-normal"> Introducing Business </span>
             </div>
 
             {/* H1 */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-5 leading-tight font-[family-name:var(--font-poppins)]">
-              <span className="block text-white">Exploring the</span>
-              <span className="block bg-gradient-to-r from-primary via-orange-500 to-primary bg-clip-text text-transparent">
-                Next Frontier
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 sm:mb-5 leading-tight font-[family-name:var(--font-manrope)] relative w-full max-w-5xl">
+              <span
+                className="block bg-clip-text text-transparent font-light py-2 sm:py-3 md:py-4 px-2 sm:px-4 relative z-[1] -mb-2 sm:-mb-3 md:-mb-4"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(115, 115, 115) 100%)',
+                }}
+              >
+                Engineering
+              </span>
+              <span
+                className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal bg-clip-text text-transparent font-[family-name:var(--font-instrument-serif)] italic relative z-[2]"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(to left, rgba(249, 94, 30, 1) 0%, rgba(249, 94, 30, 0.2) 100%)',
+                }}
+              >
+                the Next Horizon.
               </span>
             </h1>
 
             {/* Subtext */}
-            <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
               A technology studio at the intersection of design, AI, and Web3 building products that
               shape tomorrow's digital universe.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-row items-center justify-center gap-2">
+            <div className="flex flex-row items-center justify-center gap-2 sm:gap-3 px-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 h-10 px-5 rounded-full text-sm font-medium bg-primary/80 backdrop-blur-md text-primary-foreground hover:bg-primary hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 shadow-[inset_0_1px_4px_rgba(255,255,255,0.25),inset_0_-1px_4px_rgba(0,0,0,0.15)]"
+                className="inline-flex items-center justify-center gap-2 h-10 sm:h-11 px-4 sm:px-5 md:px-6 rounded-full text-sm font-medium bg-primary/80 backdrop-blur-md text-primary-foreground hover:bg-primary hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 shadow-[inset_0_1px_4px_rgba(255,255,255,0.25),inset_0_-1px_4px_rgba(0,0,0,0.15)]"
                 style={{
                   boxShadow:
                     'inset 0 1px 4px rgba(255,255,255,0.25), inset 0 -1px 4px rgba(0,0,0,0.15)',
@@ -94,7 +108,7 @@ export function Hero() {
 
               <Link
                 href="/products"
-                className="inline-flex items-center h-10 px-5 rounded-full text-sm font-medium border border-white/20 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-200 shadow-[inset_0_1px_4px_rgba(255,255,255,0.15),inset_0_-1px_4px_rgba(0,0,0,0.1)]"
+                className="inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-5 md:px-6 rounded-full text-sm font-medium border border-white/20 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-200 shadow-[inset_0_1px_4px_rgba(255,255,255,0.15),inset_0_-1px_4px_rgba(0,0,0,0.1)]"
                 style={{
                   boxShadow:
                     'inset 0 1px 4px rgba(255,255,255,0.15), inset 0 -1px 4px rgba(0,0,0,0.1)',
