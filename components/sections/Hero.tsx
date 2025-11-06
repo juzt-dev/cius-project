@@ -12,7 +12,7 @@ export function Hero() {
     offset: ['start start', 'end start'],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0vh', '-20vh'], { duration: 0.5 });
+  const y = useTransform(scrollYProgress, [0, 1], ['0vh', '-20vh']);
 
   return (
     <section
