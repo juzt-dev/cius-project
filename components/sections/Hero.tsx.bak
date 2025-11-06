@@ -37,10 +37,10 @@ export function Hero() {
 
       {/* Meteors Effect - Just above background */}
       <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
-        <Meteors number={6} />
+        <Meteors number={10} />
       </div>
 
-      {/* LiquidEther Animation */}
+      {/* LiquidEther Animation */
       <div className="absolute inset-0 opacity-50 z-[2]">
         <Particles
           mouseForce={12}

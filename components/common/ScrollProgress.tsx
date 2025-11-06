@@ -1,30 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { motion, useScroll } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
-export function ScrollProgress() {
-  const [scrollProgress, setScrollProgress] = useState(0);
+interface ScrollProgressProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref?: React.Ref<HTMLDivElement>;
+}
 
-  useEffect(() => {
-    const updateScrollProgress = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      setScrollProgress(scrollPercent);
-    };
-
-    window.addEventListener('scroll', updateScrollProgress);
-    updateScrollProgress(); // Initial call
-
-    return () => window.removeEventListener('scroll', updateScrollProgress);
-  }, []);
+export function ScrollProgress({ className, ref, ...props }: ScrollProgressProps) {
+  const { scrollYProgress } = useScroll();
 
   return (
-    <div className="fixed top-16 left-0 right-0 z-[100] h-[1px] bg-transparent pointer-events-none">
-      <div
-        className="h-full bg-gradient-to-r from-primary via-orange-500 to-primary transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
-      />
-    </div>
+    <motion.div
+      ref={ref}
+      className={cn(
+        'fixed top-16 left-0 right-0 z-[100] h-[1px] origin-left bg-gradient-to-r from-primary via-orange-500 to-primary pointer-events-none',
+        className
+      )}
+      style={{
+        scaleX: scrollYProgress,
+      }}
+      {...props}
+    />
   );
 }
