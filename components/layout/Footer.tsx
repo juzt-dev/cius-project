@@ -5,9 +5,9 @@ export default function Footer() {
 
   const footerLinks = {
     product: [
-      { name: 'Products', href: '/product' },
-      { name: 'Offers', href: '/offer' },
-      { name: 'Pricing', href: '#' },
+      { name: 'Nova', href: '/products/nova' },
+      { name: 'Orbit', href: '/products/orbit' },
+      { name: 'Linkr', href: '/products/linkr' },
     ],
     company: [
       { name: 'About Us', href: '/about' },
@@ -16,13 +16,13 @@ export default function Footer() {
     ],
     support: [
       { name: 'Contact', href: '/contact' },
-      { name: 'Documentation', href: '#' },
-      { name: 'FAQ', href: '#' },
+      { name: 'Documentation', href: '/docs' },
+      { name: 'FAQ', href: '/faq' },
     ],
     legal: [
-      { name: 'Privacy Policy', href: '#' },
-      { name: 'Terms of Service', href: '#' },
-      { name: 'Cookie Policy', href: '#' },
+      { name: 'Privacy Policy', href: '/privacy' },
+      { name: 'Terms of Service', href: '/terms' },
+      { name: 'Cookie Policy', href: '/cookies' },
     ],
   };
 
@@ -101,8 +101,13 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm text-muted-foreground">
-            © {currentYear} CIUS. All rights reserved.
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <div className="text-sm text-muted-foreground">
+              © {currentYear} CIUSLABS. All rights reserved.
+            </div>
+            <div className="text-xs text-muted-foreground/70 italic">
+              Technology · Universe · AI · Mars
+            </div>
           </div>
           <div className="flex gap-6">
             <a

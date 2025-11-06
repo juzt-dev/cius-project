@@ -2,72 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import animation definitions */
-@import './animations.css';
-
 @layer base {
   :root {
-    /* Geist Light Theme */
+    /* Geist Light Theme - Vercel Design System */
     --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
+    --foreground: 0 0% 9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card-foreground: 0 0% 9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 0 0% 9%;
 
+    /* Primary - Keep original orange */
     --primary: 16 95% 54%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 46%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
 
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 10%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
     --ring: 16 95% 54%;
 
     --radius: 0.5rem;
+
+    /* Geist Gray Scale */
+    --gray-1: 0 0% 99%;
+    --gray-2: 0 0% 97.3%;
+    --gray-3: 0 0% 95.1%;
+    --gray-4: 0 0% 93%;
+    --gray-5: 0 0% 90.9%;
+    --gray-6: 0 0% 88.7%;
+    --gray-7: 0 0% 85.8%;
+    --gray-8: 0 0% 78%;
+    --gray-9: 0 0% 56.1%;
+    --gray-10: 0 0% 52.3%;
+    --gray-11: 0 0% 43.5%;
+    --gray-12: 0 0% 9%;
   }
 
   .dark {
-    /* Geist Dark Theme */
-    --background: 0 0% 7%;
+    /* Geist Dark Theme - Vercel Design System */
+    --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 10%;
+    --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 10%;
+    --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
 
+    /* Primary - Keep original orange */
     --primary: 16 95% 54%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 15%;
+    --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 64%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
 
-    --accent: 0 0% 15%;
+    --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 63% 31%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
     --ring: 16 95% 54%;
+
+    /* Geist Gray Scale Dark */
+    --gray-1: 0 0% 8.5%;
+    --gray-2: 0 0% 11%;
+    --gray-3: 0 0% 13.6%;
+    --gray-4: 0 0% 15.8%;
+    --gray-5: 0 0% 17.9%;
+    --gray-6: 0 0% 20.5%;
+    --gray-7: 0 0% 24.3%;
+    --gray-8: 0 0% 31.2%;
+    --gray-9: 0 0% 43.9%;
+    --gray-10: 0 0% 49.4%;
+    --gray-11: 0 0% 62.8%;
+    --gray-12: 0 0% 93%;
   }
 }
 
@@ -90,6 +117,7 @@
   /* Geist-style smooth scrolling */
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 4rem; /* Account for fixed header */
   }
 
   /* Selection styles */
@@ -103,10 +131,11 @@
   }
 }
 
-/* Custom scrollbar (Geist style) */
+/* Custom scrollbar (Geist style) - Hidden */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0px;
+  height: 0px;
+  display: none;
 }
 
 ::-webkit-scrollbar-track {
@@ -121,6 +150,16 @@
   @apply bg-border/80;
 }
 
+/* Hide scrollbar for Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE, Edge */
+* {
+  -ms-overflow-style: none;
+}
+
 /* Utilities */
 @layer utilities {
   .text-balance {
@@ -130,5 +169,164 @@
   .geist-blur {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* ============================================
+   ANIMATION KEYFRAMES
+   ============================================ */
+
+/* Shimmer Button Animations */
+@keyframes shimmer-slide {
+  to {
+    translate: calc(100cqw - 100%) 0;
+  }
+}
+
+@keyframes spin-around {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-shimmer-slide {
+  animation: shimmer-slide var(--speed) ease-in-out infinite alternate;
+}
+
+.animate-spin-around {
+  animation: spin-around calc(var(--speed) * 2) linear infinite;
+}
+
+/* Magnetic Hover Effect */
+@keyframes magnetic-hover {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-2px, 2px);
+  }
+  75% {
+    transform: translate(2px, 2px);
+  }
+}
+
+.btn-magnetic {
+  transition: transform 0.2s ease;
+}
+
+.btn-magnetic:hover {
+  animation: magnetic-hover 0.3s ease-in-out;
+}
+
+.btn-magnetic:active {
+  transform: scale(0.95);
+}
+
+/* Shimmer Background Effect */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-shimmer:hover::before {
+  left: 100%;
+}
+
+/* Utility Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* Performance */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,13 +1,21 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import { GeistMono } from 'geist/font/mono';
 import '../styles/globals.css';
 import { Header, Footer } from '@/components/layout';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { ScrollProgress } from '@/components/common/ScrollProgress';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+});
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins',
   display: 'swap',
 });
 
@@ -43,9 +51,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${GeistMono.variable}`}
+      className={`${inter.variable} ${poppins.variable} ${GeistMono.variable}`}
       style={{
         ['--font-inter' as string]: inter.style.fontFamily,
+        ['--font-poppins' as string]: poppins.style.fontFamily,
         ['--font-geist-mono' as string]: GeistMono.style.fontFamily,
       }}
     >
@@ -56,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           enableSystem
           disableTransitionOnChange
         >
+          <ScrollProgress />
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />

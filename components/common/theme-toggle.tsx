@@ -1,37 +1,41 @@
 'use client';
 
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from '@geist-ui/react-icons';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return (
-      <button
-        className="inline-flex items-center justify-center rounded-full w-9 h-9 border border-border bg-background hover:bg-accent transition-colors"
-        aria-label="Toggle theme"
-      >
-        <div className="w-5 h-5" />
-      </button>
-    );
+    return <div className="w-9 h-9" />;
   }
 
+  const isDark = theme === 'dark';
+
   return (
-    <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="inline-flex items-center justify-center rounded-full w-9 h-9 border border-border bg-background hover:bg-accent transition-colors group"
+    <motion.button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="relative inline-flex items-center justify-center rounded-full w-9 h-9 border border-border bg-background hover:bg-accent overflow-hidden"
       aria-label="Toggle theme"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
     >
-      <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
-    </button>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={isDark ? 'moon' : 'sun'}
+          initial={{ y: -20, opacity: 0, rotate: isDark ? -90 : 90 }}
+          animate={{ y: 0, opacity: 1, rotate: 0 }}
+          exit={{ y: 20, opacity: 0, rotate: isDark ? 90 : -90 }}
+          transition={{ duration: 0.2 }}
+        >
+          {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+        </motion.div>
+      </AnimatePresence>
+    </motion.button>
   );
 }

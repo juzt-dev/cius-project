@@ -4,13 +4,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
+import { Download } from '@geist-ui/react-icons';
 import { ThemeToggle } from '@/components/common/theme-toggle';
 import { ShimmerButton, ShinyText } from '@/components/animations';
+import { cn } from '@/lib/utils';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   // Ensure component is mounted before accessing theme
   useEffect(() => {
@@ -49,15 +54,21 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'text-sm font-medium transition-colors hover:text-primary',
+                    isActive ? 'text-primary' : 'text-foreground'
+                  )}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Right Side: Theme Toggle + Get Report Button + Mobile Menu */}
@@ -70,9 +81,15 @@ export default function Header() {
                 borderRadius="100px"
                 shimmerDuration="2s"
                 background="hsl(var(--primary))"
-                className="px-4 py-2 text-sm font-medium"
+                className="px-4 py-2 text-sm font-medium flex items-center gap-2"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
-                <ShinyText text="Get Report" speed={3} />
+                <ShinyText text="Get Report" speed={3} disabled={!isHovered} />
+                <Download
+                  className={`w-4 h-4 !text-black transition-transform duration-300 ${isHovered ? 'translate-y-0.5' : ''}`}
+                  strokeWidth={2.5}
+                />
               </ShimmerButton>
             </Link>
 
@@ -106,16 +123,25 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block py-2 text-sm font-medium transition-colors hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'block py-2 text-sm font-medium transition-colors hover:text-primary relative',
+                    isActive ? 'text-primary font-semibold' : 'text-foreground'
+                  )}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                  {isActive && (
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-primary rounded-r-full" />
+                  )}
+                </Link>
+              );
+            })}
             <Link href="/report" className="block mt-4" onClick={() => setIsMenuOpen(false)}>
               <ShimmerButton
                 shimmerColor="#ffffff"
@@ -123,9 +149,15 @@ export default function Header() {
                 borderRadius="100px"
                 shimmerDuration="2s"
                 background="hsl(var(--primary))"
-                className="w-full px-4 py-2 text-sm font-medium text-center"
+                className="w-full px-4 py-2 text-sm font-medium text-center flex items-center justify-center gap-2"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
-                <ShinyText text="Get Report" speed={3} />
+                <ShinyText text="Get Report" speed={2} disabled={!isHovered} />
+                <Download
+                  className={`w-4 h-4 !text-black transition-transform duration-100 ${isHovered ? 'translate-y-0.01' : ''}`}
+                  strokeWidth={2.5}
+                />
               </ShimmerButton>
             </Link>
           </nav>
