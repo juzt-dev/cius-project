@@ -3,16 +3,35 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { useScroll, useTransform, motion } from 'framer-motion';
-import { Particles, Meteors } from '@/components/magicui';
+import { Particles } from '@/components/magicui';
+import { cn } from '@/lib/utils';
+import { BlurReveal } from '@/components/ui/blur-reveal';
+
+const PARTICLES_CONFIG = {
+  mouseForce: 12,
+  cursorSize: 120,
+  isViscous: true,
+  viscous: 40,
+  resolution: 0.3,
+  dt: 0.018,
+  BFECC: false,
+  autoDemo: true,
+  autoSpeed: 0.35,
+  autoIntensity: 1.8,
+  colors: ['#F95E1E', '#FF7A3D', '#F95E1E', '#FFA726', '#F95E1E'],
+} as const;
+
+const PARALLAX_OFFSET = ['start start', 'end start'] as const;
+const PARALLAX_RANGE = ['0vh', '-20vh'] as const;
 
 export function Hero() {
   const container = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ['start start', 'end start'],
+    offset: PARALLAX_OFFSET,
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0vh', '-20vh']);
+  const y = useTransform(scrollYProgress, [0, 1], PARALLAX_RANGE);
 
   return (
     <section
@@ -35,26 +54,9 @@ export function Hero() {
       {/* Background Overlay */}
       <div className="absolute inset-0 bg-black/10 z-[1]" />
 
-      {/* Meteors Effect - Just above background */}
-      <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
-        <Meteors number={6} />
-      </div>
-
       {/* LiquidEther Animation */}
       <div className="absolute inset-0 opacity-50 z-[2]">
-        <Particles
-          mouseForce={12}
-          cursorSize={120}
-          isViscous={true}
-          viscous={40}
-          resolution={0.3}
-          dt={0.018}
-          BFECC={false}
-          autoDemo={true}
-          autoSpeed={0.35}
-          autoIntensity={1.8}
-          colors={['#F95E1E', '#FF7A3D', '#F95E1E', '#FFA726', '#F95E1E']}
-        />
+        <Particles {...PARTICLES_CONFIG} />
       </div>
 
       {/* Content */}
@@ -70,25 +72,15 @@ export function Hero() {
               <span className="text-gray-300 font-normal"> Introducing Business </span>
             </div>
 
-            {/* H1 */}
+            {/* H1 with BlurReveal */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 sm:mb-5 leading-tight font-[family-name:var(--font-manrope)] relative w-full max-w-5xl">
-              <span
-                className="block bg-clip-text text-transparent font-light py-2 sm:py-3 md:py-4 px-2 sm:px-4 relative z-[1] -mb-2 sm:-mb-3 md:-mb-4"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(to bottom, rgb(255, 255, 255) 0%, rgb(115, 115, 115) 100%)',
-                }}
-              >
-                Engineering
+              <span className="block bg-clip-text text-transparent font-light py-2 sm:py-3 md:py-4 px-2 sm:px-4 relative z-[1] -mb-2 sm:-mb-3 md:-mb-4 bg-gradient-to-b from-white to-gray-400">
+                <BlurReveal delay={0.0}>Engineering</BlurReveal>
               </span>
-              <span
-                className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal bg-clip-text text-transparent font-[family-name:var(--font-instrument-serif)] italic relative z-[2]"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(to left, rgba(249, 94, 30, 1) 0%, rgba(249, 94, 30, 0.2) 100%)',
-                }}
-              >
-                the Next Horizon.
+              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal bg-clip-text text-transparent font-[family-name:var(--font-instrument-serif)] italic relative z-[2] bg-gradient-to-l from-primary to-primary/20">
+                <BlurReveal delay={0.1}>the&nbsp;</BlurReveal>
+                <BlurReveal delay={0.2}>Next&nbsp;</BlurReveal>
+                <BlurReveal delay={0.3}>Horizon.</BlurReveal>
               </span>
             </h1>
 
@@ -102,22 +94,28 @@ export function Hero() {
             <div className="flex flex-row items-center justify-center gap-2 sm:gap-3 px-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 h-10 sm:h-11 px-4 sm:px-5 md:px-6 rounded-full text-sm font-medium bg-primary/80 backdrop-blur-md text-primary-foreground hover:bg-primary hover:scale-105 active:scale-95 transition-all duration-200 border border-white/20 shadow-[inset_0_1px_4px_rgba(255,255,255,0.25),inset_0_-1px_4px_rgba(0,0,0,0.15)]"
-                style={{
-                  boxShadow:
-                    'inset 0 1px 4px rgba(255,255,255,0.25), inset 0 -1px 4px rgba(0,0,0,0.15)',
-                }}
+                className={cn(
+                  'inline-flex items-center justify-center gap-2 h-10 sm:h-11 px-4 sm:px-5 md:px-6',
+                  'rounded-full text-sm font-medium',
+                  'bg-primary/80 backdrop-blur-md text-primary-foreground',
+                  'hover:bg-primary hover:scale-105 active:scale-95',
+                  'transition-all duration-200 border border-white/20',
+                  'shadow-[inset_0_1px_4px_rgba(255,255,255,0.25),inset_0_-1px_4px_rgba(0,0,0,0.15)]'
+                )}
               >
                 Get in touch
               </Link>
 
               <Link
                 href="/products"
-                className="inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-5 md:px-6 rounded-full text-sm font-medium border border-white/20 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 hover:scale-105 active:scale-95 transition-all duration-200 shadow-[inset_0_1px_4px_rgba(255,255,255,0.15),inset_0_-1px_4px_rgba(0,0,0,0.1)]"
-                style={{
-                  boxShadow:
-                    'inset 0 1px 4px rgba(255,255,255,0.15), inset 0 -1px 4px rgba(0,0,0,0.1)',
-                }}
+                className={cn(
+                  'inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-5 md:px-6',
+                  'rounded-full text-sm font-medium',
+                  'border border-white/20 bg-white/10 backdrop-blur-md text-white',
+                  'hover:bg-white/20 hover:scale-105 active:scale-95',
+                  'transition-all duration-200',
+                  'shadow-[inset_0_1px_4px_rgba(255,255,255,0.15),inset_0_-1px_4px_rgba(0,0,0,0.1)]'
+                )}
               >
                 See products
               </Link>

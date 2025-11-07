@@ -1,31 +1,9 @@
 'use client';
 
 import { Card } from '@/components/ui';
-import { Zap, Command, Layers, GitBranch } from '@geist-ui/react-icons';
+import { Zap } from '@geist-ui/react-icons';
 import { cn } from '@/lib/utils';
-
-const aiFeatures = [
-  {
-    icon: Zap,
-    title: 'Instant Generation',
-    description: 'From concept to reality in seconds',
-  },
-  {
-    icon: Command,
-    title: 'Smart Automation',
-    description: 'Focus on creativity, we handle the rest',
-  },
-  {
-    icon: Layers,
-    title: 'Context-Aware',
-    description: 'Understands your project and adapts',
-  },
-  {
-    icon: GitBranch,
-    title: 'Iterative Learning',
-    description: 'Gets better with every interaction',
-  },
-];
+import { AI_FEATURES } from '@/lib/constants/sections/ai-section';
 
 export function AISection() {
   return (
@@ -59,7 +37,7 @@ export function AISection() {
             </p>
 
             <div className="space-y-4">
-              {aiFeatures.map((feature, index) => {
+              {AI_FEATURES.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
                   <div

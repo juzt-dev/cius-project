@@ -1,4 +1,20 @@
+# Allow all search engines to crawl public pages
 User-agent: *
 Allow: /
 
+# Disallow API endpoints (not meant for search engines)
+Disallow: /api/
+
+# Disallow admin/dashboard pages (if any)
+# Disallow: /admin/
+# Disallow: /dashboard/
+
+# Allow specific bots (optional - for better control)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
 Sitemap: https://cius.com/sitemap.xml

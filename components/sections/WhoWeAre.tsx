@@ -1,64 +1,79 @@
-import { Star, Zap } from '@geist-ui/react-icons';
+'use client';
+
+import { Star } from '@geist-ui/react-icons';
+import { motion } from 'framer-motion';
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: 'easeOut' },
+};
 
 export function WhoWeAre() {
   return (
-    <section className="py-24 md:py-32 lg:py-40 bg-muted/30">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-12 gap-8 lg:gap-16">
-          {/* Left Column - Title */}
-          <div className="col-span-12 lg:col-span-5">
-            <div className="sticky top-32">
-              <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-primary/10 border border-primary/20">
-                <Star className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Who We Are</span>
-              </div>
+    <section className="relative py-24 md:py-32 lg:py-40 bg-muted/30 overflow-hidden">
+      {/* Background Decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
 
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                <span className="block text-foreground">Technology</span>
-                <span className="block bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
-                  Meets Vision
-                </span>
-              </h2>
-            </div>
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Badge */}
+        <motion.div
+          className="flex justify-center mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm hover:bg-primary/20 transition-colors duration-300">
+            <Star className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Who We Are</span>
           </div>
+        </motion.div>
 
-          {/* Right Column - Content */}
-          <div className="col-span-12 lg:col-span-7 space-y-8">
-            <div className="space-y-6">
-              <p className="text-xl md:text-2xl text-foreground leading-relaxed">
-                CIUSLABS is a forward-thinking technology studio where innovation meets execution.
-              </p>
+        {/* Main Content */}
+        <motion.div
+          className="max-w-7xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-[family-name:var(--font-manrope)] font-light text-foreground leading-[1.1] text-center">
+            <span className="inline-block">C.Labs is a </span>
+            <span className="inline-block bg-gradient-to-r from-primary via-orange-500 to-primary bg-clip-text text-transparent">
+              leading tech studio{' '}
+            </span>
+            <span className="inline-block">where </span>
+            <span className="inline-block font-medium text-foreground">
+              innovation meets execution.{' '}
+            </span>
+            <span className="inline-block">We create experiences that </span>
+            <span className="inline-block bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
+              push boundaries,{' '}
+            </span>
+            <span className="inline-block">from </span>
+            <span className="inline-block font-medium">AI tools </span>
+            <span className="inline-block">to next-gen </span>
+            <span className="inline-block font-medium">Web3 platforms. </span>
+            <span className="inline-block">Our team combines </span>
+            <span className="inline-block text-primary">technical skill </span>
+            <span className="inline-block">with </span>
+            <span className="inline-block text-primary">design passion, </span>
+            <span className="inline-block">ensuring technology is </span>
+            <span className="inline-block font-medium">powerful, intuitive, and accessible.</span>
+          </h2>
+        </motion.div>
 
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We're not just building products — we're crafting experiences that push the
-                boundaries of what's possible. From AI-powered tools to next-generation Web3
-                platforms, we explore uncharted territories in the digital universe.
-              </p>
-
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Our team combines deep technical expertise with a passion for design excellence. We
-                believe that technology should be powerful yet intuitive, complex yet elegant,
-                innovative yet accessible.
-              </p>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 pt-8">
-              <div className="space-y-2">
-                <div className="text-3xl md:text-4xl font-bold text-primary">50+</div>
-                <div className="text-sm text-muted-foreground">Projects Launched</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl md:text-4xl font-bold text-primary">100K+</div>
-                <div className="text-sm text-muted-foreground">Active Users</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl md:text-4xl font-bold text-primary">24/7</div>
-                <div className="text-sm text-muted-foreground">Innovation Mode</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Bottom Accent */}
+        <motion.div
+          className="flex justify-center mt-16 md:mt-20"
+          initial={{ opacity: 0, scaleX: 0 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="h-1 w-32 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
+        </motion.div>
       </div>
     </section>
   );

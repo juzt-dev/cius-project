@@ -3,8 +3,9 @@ import { Inter, Manrope, Instrument_Serif } from 'next/font/google';
 import { GeistMono } from 'geist/font/mono';
 import '../styles/globals.css';
 import { Header, Footer } from '@/components/layout';
-import { ThemeProvider } from '@/components/providers/theme-provider';
 import { ScrollProgress } from '@/components/common/ScrollProgress';
+import { ThemeProvider } from '@/components/providers/theme-provider';
+import { LenisProvider } from '@/components/providers/lenis-provider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -58,21 +59,45 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${manrope.variable} ${instrumentSerif.variable} ${GeistMono.variable}`}
-      style={{
-        ['--font-inter' as string]: inter.style.fontFamily,
-        ['--font-manrope' as string]: manrope.style.fontFamily,
-        ['--font-instrument-serif' as string]: instrumentSerif.style.fontFamily,
-        ['--font-geist-mono' as string]: GeistMono.style.fontFamily,
-      }}
+      className={`${inter.variable} ${manrope.variable} ${instrumentSerif.variable} ${GeistMono.variable} dark`}
     >
-      <body className="font-sans antialiased bg-background text-foreground">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <ScrollProgress />
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-        </ThemeProvider>
+      <body
+        className="font-sans antialiased bg-background text-foreground"
+        suppressHydrationWarning
+      >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'dark';
+                  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  const resolvedTheme = theme === 'system' ? systemTheme : theme;
+                  const html = document.documentElement;
+                  html.classList.add(resolvedTheme);
+                  html.style.colorScheme = resolvedTheme;
+                } catch (e) {
+                  const html = document.documentElement;
+                  html.classList.add('dark');
+                  html.style.colorScheme = 'dark';
+                }
+              })();
+            `,
+          }}
+        />
+        <LenisProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ScrollProgress />
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </ThemeProvider>
+        </LenisProvider>
       </body>
     </html>
   );

@@ -1,46 +1,11 @@
 'use client';
 
 import { Card } from '@/components/ui';
-import { ArrowRight, Star, Link as LinkIcon, Circle } from '@geist-ui/react-icons';
+import { ArrowRight } from '@geist-ui/react-icons';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useState } from 'react';
-
-const products = [
-  {
-    name: 'Nova',
-    tagline: 'AI-Powered Design Assistant',
-    description:
-      'Transform your creative workflow with an intelligent design companion that understands context, suggests improvements, and accelerates production.',
-    features: ['Smart Layout Generation', 'Color Palette AI', 'Design System Sync'],
-    icon: Star,
-    gradient: 'from-blue-500 to-cyan-500',
-    bgGradient: 'from-blue-500/10 to-cyan-500/10',
-    status: 'Live',
-  },
-  {
-    name: 'Orbit',
-    tagline: 'Web3 Collaboration Platform',
-    description:
-      'Decentralized workspace for remote teams. Own your data, control your workflow, and collaborate without boundaries in the Web3 universe.',
-    features: ['On-Chain Identity', 'Token-Gated Access', 'DAO Governance'],
-    icon: Circle,
-    gradient: 'from-primary to-orange-500',
-    bgGradient: 'from-primary/10 to-orange-500/10',
-    status: 'Beta',
-  },
-  {
-    name: 'Linkr',
-    tagline: 'Smart Link Management',
-    description:
-      'Next-gen link shortener with analytics, QR codes, and smart targeting. Built for marketers, creators, and growth-focused teams.',
-    features: ['Advanced Analytics', 'Custom Domains', 'A/B Testing'],
-    icon: LinkIcon,
-    gradient: 'from-purple-500 to-pink-500',
-    bgGradient: 'from-purple-500/10 to-pink-500/10',
-    status: 'Coming Soon',
-  },
-];
+import { PRODUCTS } from '@/lib/constants/sections/our-products';
 
 export function OurProducts() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -66,7 +31,7 @@ export function OurProducts() {
 
           {/* Products Grid */}
           <div className="col-span-12 space-y-8">
-            {products.map((product, index) => {
+            {PRODUCTS.map((product, index) => {
               const Icon = product.icon;
               const isHovered = hoveredIndex === index;
 
