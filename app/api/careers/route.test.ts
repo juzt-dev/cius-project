@@ -44,7 +44,7 @@ describe('POST /api/careers', () => {
       };
 
       vi.mocked(prisma.career.create).mockResolvedValueOnce(mockCareer);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/careers', {
         method: 'POST',
@@ -92,12 +92,12 @@ describe('POST /api/careers', () => {
         name: 'John Doe',
         email: 'john@example.com',
         position: 'Junior Dev',
-        message: undefined,
+        message: null,
         createdAt: new Date(),
       };
 
       vi.mocked(prisma.career.create).mockResolvedValueOnce(mockCareer);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/careers', {
         method: 'POST',
@@ -127,7 +127,7 @@ describe('POST /api/careers', () => {
       };
 
       vi.mocked(prisma.career.create).mockResolvedValueOnce(mockCareer);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/careers', {
         method: 'POST',
@@ -317,7 +317,7 @@ describe('POST /api/careers', () => {
       };
 
       vi.mocked(prisma.career.create).mockResolvedValueOnce(mockCareer);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/careers', {
         method: 'POST',

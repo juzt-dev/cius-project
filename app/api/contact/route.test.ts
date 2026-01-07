@@ -94,7 +94,7 @@ describe('POST /api/contact', () => {
       };
 
       vi.mocked(prisma.contact.create).mockResolvedValueOnce(mockContact);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/contact', {
         method: 'POST',
@@ -120,7 +120,7 @@ describe('POST /api/contact', () => {
       };
 
       vi.mocked(prisma.contact.create).mockResolvedValueOnce(mockContact);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/contact', {
         method: 'POST',
@@ -356,7 +356,7 @@ describe('POST /api/contact', () => {
       };
 
       vi.mocked(prisma.contact.create).mockResolvedValueOnce(mockContact);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/contact', {
         method: 'POST',
@@ -406,7 +406,7 @@ describe('POST /api/contact', () => {
       };
 
       vi.mocked(prisma.contact.create).mockResolvedValueOnce(mockContact);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const response = await POST(request as any);
       expect(response.status).toBe(201);

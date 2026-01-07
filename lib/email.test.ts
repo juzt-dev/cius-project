@@ -8,7 +8,7 @@
  * and document expected behavior for the sendEmail function.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { emailTemplates } from './email';
 
 describe('Email Service', () => {

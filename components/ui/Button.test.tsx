@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
+import React from 'react';
 import { render, screen, userEvent } from '@/lib/test-utils';
 import { Button } from './Button';
 
@@ -231,7 +232,7 @@ describe('Button', () => {
 
   describe('Ref Forwarding', () => {
     it('should forward ref correctly', () => {
-      const ref = { current: null };
+      const ref = React.createRef<HTMLButtonElement>();
 
       render(<Button ref={ref}>Button</Button>);
 
@@ -240,7 +241,7 @@ describe('Button', () => {
     });
 
     it('should allow ref to access button methods', () => {
-      const ref = { current: null };
+      const ref = React.createRef<HTMLButtonElement>();
 
       render(<Button ref={ref}>Button</Button>);
 

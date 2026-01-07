@@ -41,7 +41,7 @@ describe('POST /api/report', () => {
       };
 
       vi.mocked(prisma.reportDownload.create).mockResolvedValueOnce(mockReport);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/report', {
         method: 'POST',
@@ -82,7 +82,7 @@ describe('POST /api/report', () => {
       };
 
       vi.mocked(prisma.reportDownload.create).mockResolvedValueOnce(mockReport1);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/report', {
         method: 'POST',
@@ -113,7 +113,10 @@ describe('POST /api/report', () => {
         };
 
         vi.mocked(prisma.reportDownload.create).mockResolvedValueOnce(mockReport);
-        vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+        vi.mocked(sendEmail).mockResolvedValueOnce({
+          success: true,
+          data: { id: 'mock-email-id' },
+        });
 
         const request = new Request('http://localhost:3000/api/report', {
           method: 'POST',
@@ -301,7 +304,7 @@ describe('POST /api/report', () => {
       };
 
       vi.mocked(prisma.reportDownload.create).mockResolvedValueOnce(mockReport);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/report', {
         method: 'POST',
@@ -322,7 +325,7 @@ describe('POST /api/report', () => {
       };
 
       vi.mocked(prisma.reportDownload.create).mockResolvedValueOnce(mockReport);
-      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true });
+      vi.mocked(sendEmail).mockResolvedValueOnce({ success: true, data: { id: 'mock-email-id' } });
 
       const request = new Request('http://localhost:3000/api/report', {
         method: 'POST',

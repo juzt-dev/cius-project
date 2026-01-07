@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import React from 'react';
 import { render, screen, userEvent } from '@/lib/test-utils';
 import { Input } from './Input';
 
@@ -235,7 +236,7 @@ describe('Input', () => {
 
   describe('Ref Forwarding', () => {
     it('should forward ref correctly', () => {
-      const ref = { current: null };
+      const ref = React.createRef<HTMLInputElement>();
 
       render(<Input ref={ref} />);
 
@@ -243,7 +244,7 @@ describe('Input', () => {
     });
 
     it('should allow ref to access input methods', () => {
-      const ref = { current: null };
+      const ref = React.createRef<HTMLInputElement>();
 
       render(<Input ref={ref} />);
 
@@ -253,7 +254,7 @@ describe('Input', () => {
     });
 
     it('should allow programmatic focus via ref', () => {
-      const ref = { current: null };
+      const ref = React.createRef<HTMLInputElement>();
 
       render(<Input ref={ref} />);
 
