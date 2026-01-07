@@ -50,3 +50,7 @@ prisma/migrations/
 .cache/
 .turbo
 *.log
+
+# Claude AI (local development only)
+.claude/
+release-manifest.json

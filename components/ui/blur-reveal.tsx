@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export interface BlurRevealProps extends React.HTMLAttributes<HTMLElement> {
   delay?: number;
-  as?: keyof JSX.IntrinsicElements;
+  as?: React.ElementType;
 }
 
 export const BlurReveal: React.FC<BlurRevealProps> = ({
