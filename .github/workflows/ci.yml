@@ -36,10 +36,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Note: ESLint disabled temporarily due to ESLint v9 + Next.js compatibility issues
-      # TODO: Re-enable when eslint-config-next supports flat config natively
-      # - name: Run ESLint
-      #   run: pnpm lint
+      - name: Run ESLint
+        run: pnpm lint
 
       - name: Check Prettier formatting
         run: pnpm format:check
