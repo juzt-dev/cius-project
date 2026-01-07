@@ -16,15 +16,15 @@ export function cn(...inputs: ClassValue[]): string {
  */
 export function formatDate(date: Date | string): string {
   try {
-  const d = new Date(date);
+    const d = new Date(date);
     if (Number.isNaN(d.getTime())) {
       throw new Error('Invalid date');
     }
-  return d.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+    return d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
   } catch (error) {
     console.error('Error formatting date:', error);
     return 'Invalid date';
@@ -81,7 +81,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
 
   return (...args: Parameters<T>) => {
     if (timeout) {
-    clearTimeout(timeout);
+      clearTimeout(timeout);
     }
     timeout = setTimeout(() => {
       func(...args);
@@ -128,11 +128,11 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
  */
 export async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
   try {
-  const response = await fetch(url, options);
+    const response = await fetch(url, options);
 
-  if (!response.ok) {
+    if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
-  }
+    }
 
     const data = await response.json();
     return data as T;

@@ -21,7 +21,7 @@ const PARTICLES_CONFIG = {
   colors: ['#F95E1E', '#FF7A3D', '#F95E1E', '#FFA726', '#F95E1E'] as string[],
 };
 
-const PARALLAX_OFFSET: ["start start", "end start"] = ['start start', 'end start'];
+const PARALLAX_OFFSET: ['start start', 'end start'] = ['start start', 'end start'];
 const PARALLAX_RANGE: [string, string] = ['0vh', '-20vh'];
 
 export function Hero() {

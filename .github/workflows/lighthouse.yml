@@ -15,13 +15,13 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "9"
+          version: '9'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -46,24 +46,24 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            
+
             // Read lighthouse results
             const resultsPath = '${{ steps.lighthouse.outputs.resultsPath }}';
-            
+
             const body = `## 🔦 Lighthouse Performance Report
-            
+
             | Metric | Score |
             |--------|-------|
             | **Performance** | Check artifacts |
             | **Accessibility** | Check artifacts |
             | **Best Practices** | Check artifacts |
             | **SEO** | Check artifacts |
-            
+
             📊 [View Full Report](${{ steps.lighthouse.outputs.links }})
-            
+
             ---
             <sub>Powered by Lighthouse CI</sub>`;
-            
+
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,

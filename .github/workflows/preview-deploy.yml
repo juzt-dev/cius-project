@@ -26,13 +26,13 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "9"
+          version: '9'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Install Vercel CLI
         run: pnpm add -g vercel@latest
@@ -58,29 +58,29 @@ jobs:
           script: |
             const previewUrl = '${{ steps.deploy.outputs.preview-url }}';
             const body = `## 🚀 Preview Deployment Ready!
-            
+
             | Environment | URL |
             |-------------|-----|
             | **Preview** | [${previewUrl}](${previewUrl}) |
-            
+
             **Commit:** \`${{ github.sha }}\`
             **Branch:** \`${{ github.head_ref }}\`
-            
+
             ---
             <sub>Deployed by GitHub Actions</sub>`;
-            
+
             // Find existing comment
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            
+
             const botComment = comments.find(c => 
               c.user.type === 'Bot' && 
               c.body.includes('Preview Deployment Ready')
             );
-            
+
             if (botComment) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,

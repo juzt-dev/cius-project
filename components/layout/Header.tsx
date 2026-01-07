@@ -65,9 +65,7 @@ function MobileMenu({ isOpen, onClose, pathname, isHovered, onHoverChange }: Mob
                     className={cn(
                       'group relative py-3 px-4 rounded-xl text-base font-medium transition-all duration-200',
                       'hover:bg-primary/10 hover:pl-6',
-                      isActive
-                        ? 'text-primary bg-primary/10 font-semibold'
-                        : 'text-foreground'
+                      isActive ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground'
                     )}
                     onClick={onClose}
                   >
@@ -97,7 +95,10 @@ function MobileMenu({ isOpen, onClose, pathname, isHovered, onHoverChange }: Mob
                   onMouseLeave={() => onHoverChange(false)}
                 >
                   <ShinyText text="Get Report" speed={2} disabled={!isHovered} />
-                  <Download className="w-4 h-4 !text-black transition-transform duration-200" strokeWidth={2.5} />
+                  <Download
+                    className="w-4 h-4 !text-black transition-transform duration-200"
+                    strokeWidth={2.5}
+                  />
                 </ShimmerButton>
               </Link>
             </div>
@@ -131,12 +132,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             {logoSrc ? (
-              <Image
-                src={logoSrc}
-                alt="CIUSLABS Logo"
-                {...LOGO_CONFIG}
-                priority
-              />
+              <Image src={logoSrc} alt="CIUSLABS Logo" {...LOGO_CONFIG} priority />
             ) : (
               <div className="h-7 w-[140px]" aria-hidden="true" />
             )}

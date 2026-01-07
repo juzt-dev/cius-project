@@ -1,6 +1,6 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,21 +12,21 @@ const compat = new FlatCompat({
 const eslintConfig = [
   {
     ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "dist/**",
-      "build/**",
-      ".claude/**",
-      "plans/**",
-      "docs/**",
-      "*.config.js",
-      "*.config.mjs",
-      "eslint.config.mjs",
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'dist/**',
+      'build/**',
+      '.claude/**',
+      'plans/**',
+      'docs/**',
+      '*.config.js',
+      '*.config.mjs',
+      'eslint.config.mjs',
     ],
   },
   ...compat.config({
-    extends: ["next/core-web-vitals"],
+    extends: ['next/core-web-vitals'],
   }),
 ];
 

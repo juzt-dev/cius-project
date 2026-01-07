@@ -35,5 +35,3 @@ export const FOCUS_AREAS: FocusArea[] = [
     iconColor: 'text-purple-500',
   },
 ];
-
-

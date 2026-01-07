@@ -47,5 +47,3 @@ export const PRODUCTS: Product[] = [
     status: 'Coming Soon',
   },
 ];
-
-

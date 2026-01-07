@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **CIUS Web App** - A professional enterprise web application for CIUS Team.
 
 ### Tech Stack
+
 - **Framework:** Next.js 16.1.1 (App Router + Turbopack)
 - **Language:** TypeScript 5.9, React 19.2
 - **Styling:** TailwindCSS v4, Framer Motion 12.x
@@ -18,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Storage:** Cloudinary
 
 ### Key Commands
+
 ```bash
 pnpm dev              # Start dev server
 pnpm build            # Build production
@@ -67,17 +69,20 @@ When a tool call is blocked by the privacy-block hook, the output contains a JSO
    - **"No, skip this file"** → Continue without accessing the file
 
 **Example AskUserQuestion call:**
+
 ```json
 {
-  "questions": [{
-    "question": "I need to read \".env\" which may contain sensitive data. Do you approve?",
-    "header": "File Access",
-    "options": [
-      { "label": "Yes, approve access", "description": "Allow reading .env this time" },
-      { "label": "No, skip this file", "description": "Continue without accessing this file" }
-    ],
-    "multiSelect": false
-  }]
+  "questions": [
+    {
+      "question": "I need to read \".env\" which may contain sensitive data. Do you approve?",
+      "header": "File Access",
+      "options": [
+        { "label": "Yes, approve access", "description": "Allow reading .env this time" },
+        { "label": "No, skip this file", "description": "Continue without accessing this file" }
+      ],
+      "multiSelect": false
+    }
+  ]
 }
 ```
 
@@ -86,6 +91,7 @@ When a tool call is blocked by the privacy-block hook, the output contains a JSO
 ## Python Scripts (Skills)
 
 When running Python scripts from `.claude/skills/`, use the venv Python interpreter:
+
 - **Linux/macOS:** `.claude/skills/.venv/bin/python3 scripts/xxx.py`
 - **Windows:** `.claude\skills\.venv\Scripts\python.exe scripts\xxx.py`
 
@@ -106,4 +112,4 @@ We keep all important docs in `./docs` folder and keep updating them, structure 
 └── project-roadmap.md
 ```
 
-**IMPORTANT:** *MUST READ* and *MUST COMPLY* all *INSTRUCTIONS* in project `./CLAUDE.md`, especially *WORKFLOWS* section is *CRITICALLY IMPORTANT*, this rule is *MANDATORY. NON-NEGOTIABLE. NO EXCEPTIONS. MUST REMEMBER AT ALL TIMES!!!*
+**IMPORTANT:** _MUST READ_ and _MUST COMPLY_ all _INSTRUCTIONS_ in project `./CLAUDE.md`, especially _WORKFLOWS_ section is _CRITICALLY IMPORTANT_, this rule is _MANDATORY. NON-NEGOTIABLE. NO EXCEPTIONS. MUST REMEMBER AT ALL TIMES!!!_

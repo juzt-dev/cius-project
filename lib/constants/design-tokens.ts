@@ -10,10 +10,10 @@ export const SPACING = {
     md: 'py-16 md:py-24',
     lg: 'py-24 md:py-32',
   },
-  
+
   // Container
   container: 'container mx-auto px-4 sm:px-6 lg:px-8',
-  
+
   // Content max widths
   content: {
     sm: 'max-w-2xl',
@@ -30,7 +30,7 @@ export const TYPOGRAPHY = {
     md: 'text-5xl md:text-6xl font-bold tracking-tight',
     lg: 'text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight',
   },
-  
+
   // Headings
   h1: 'text-4xl md:text-5xl font-bold tracking-tight',
   h2: 'text-3xl md:text-4xl font-bold tracking-tight',
@@ -38,20 +38,20 @@ export const TYPOGRAPHY = {
   h4: 'text-xl md:text-2xl font-semibold',
   h5: 'text-lg md:text-xl font-semibold',
   h6: 'text-base md:text-lg font-semibold',
-  
+
   // Body text
   body: {
     sm: 'text-sm leading-relaxed',
     base: 'text-base leading-relaxed',
     lg: 'text-lg leading-relaxed',
   },
-  
+
   // Labels
   label: 'text-sm font-medium',
-  
+
   // Captions
   caption: 'text-xs text-muted-foreground',
-  
+
   // Code
   code: 'font-mono text-sm',
 } as const;

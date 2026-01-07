@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ============================================
    TAILWIND V4 THEME CONFIGURATION
@@ -7,7 +7,9 @@
 
 @theme {
   /* Font Families */
-  --font-sans: 'PP Neue Montreal', var(--font-inter), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans:
+    'PP Neue Montreal', var(--font-inter), 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 
   /* Border Radius */
@@ -16,21 +18,21 @@
   --radius-sm: calc(0.5rem - 4px);
 
   /* Custom Colors */
-  --color-primary-50: #FFF4ED;
-  --color-primary-100: #FFE6D5;
-  --color-primary-200: #FFC9AA;
-  --color-primary-300: #FFA574;
-  --color-primary-400: #FF7A3C;
-  --color-primary-500: #F95E1E;
-  --color-primary-600: #E04510;
-  --color-primary-700: #B9330F;
-  --color-primary-800: #942C14;
-  --color-primary-900: #7A2814;
+  --color-primary-50: #fff4ed;
+  --color-primary-100: #ffe6d5;
+  --color-primary-200: #ffc9aa;
+  --color-primary-300: #ffa574;
+  --color-primary-400: #ff7a3c;
+  --color-primary-500: #f95e1e;
+  --color-primary-600: #e04510;
+  --color-primary-700: #b9330f;
+  --color-primary-800: #942c14;
+  --color-primary-900: #7a2814;
   --color-primary-950: #421109;
 
-  --color-success: #10B981;
-  --color-error: #EF4444;
-  --color-warning: #F59E0B;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
 
   /* Keyframe Animations */
   --animate-fade-in: fade-in 0.5s ease-out;
@@ -45,53 +47,103 @@
   --animate-shine: shine 5s linear infinite;
 
   @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes fade-down {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes slide-in-right {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   @keyframes slide-in-left {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   @keyframes scale-in {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   @keyframes shimmer {
-    0% { background-position: -1000px 0; }
-    100% { background-position: 1000px 0; }
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
   }
 
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
   }
 
   @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
 
   @keyframes shine {
-    0% { background-position: 100%; }
-    100% { background-position: -100%; }
+    0% {
+      background-position: 100%;
+    }
+    100% {
+      background-position: -100%;
+    }
   }
 }
 
@@ -153,8 +205,10 @@
 
 :root {
   /* Font Family Variables */
-  --font-pp-neue-montreal: 'PP Neue Montreal', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  
+  --font-pp-neue-montreal:
+    'PP Neue Montreal', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+
   /* Geist Light Theme - Vercel Design System */
   --background: 0 0% 100%;
   --foreground: 0 0% 9%;
@@ -268,7 +322,10 @@ html,
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  transition: background-color 0s, color 0s, color-scheme 0s;
+  transition:
+    background-color 0s,
+    color 0s,
+    color-scheme 0s;
 }
 
 /* Light theme override */
@@ -278,7 +335,9 @@ html:not(.dark) {
 }
 
 body {
-  font-feature-settings: 'rlig' 1, 'calt' 1;
+  font-feature-settings:
+    'rlig' 1,
+    'calt' 1;
 }
 
 /* Selection styles */
@@ -289,7 +348,9 @@ body {
 /* Focus styles */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px hsl(var(--ring)), 0 0 0 4px hsl(var(--background));
+  box-shadow:
+    0 0 0 2px hsl(var(--ring)),
+    0 0 0 4px hsl(var(--background));
 }
 
 /* Custom scrollbar (Geist style) - Hidden */
@@ -338,21 +399,37 @@ body {
 
 /* Nav Brightness Glow Animation */
 @keyframes brightness-glow {
-  0% { text-shadow: 0 0 0px hsl(var(--primary) / 0); }
-  25% { text-shadow: 0 0 2px hsl(var(--primary) / 0.2); }
-  50% { text-shadow: 0 0 4px hsl(var(--primary) / 0.4); }
-  75% { text-shadow: 0 0 6px hsl(var(--primary) / 0.5); }
-  100% { text-shadow: 0 0 8px hsl(var(--primary) / 0.6); }
+  0% {
+    text-shadow: 0 0 0px hsl(var(--primary) / 0);
+  }
+  25% {
+    text-shadow: 0 0 2px hsl(var(--primary) / 0.2);
+  }
+  50% {
+    text-shadow: 0 0 4px hsl(var(--primary) / 0.4);
+  }
+  75% {
+    text-shadow: 0 0 6px hsl(var(--primary) / 0.5);
+  }
+  100% {
+    text-shadow: 0 0 8px hsl(var(--primary) / 0.6);
+  }
 }
 
 /* Shimmer Button Animations */
 @keyframes shimmer-slide {
-  to { translate: calc(100cqw - 100%) 0; }
+  to {
+    translate: calc(100cqw - 100%) 0;
+  }
 }
 
 @keyframes spin-around {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-shimmer-slide {
@@ -365,10 +442,19 @@ body {
 
 /* Magnetic Hover Effect */
 @keyframes magnetic-hover {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(2px, -2px); }
-  50% { transform: translate(-2px, 2px); }
-  75% { transform: translate(2px, 2px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-2px, 2px);
+  }
+  75% {
+    transform: translate(2px, 2px);
+  }
 }
 
 .btn-magnetic {
@@ -406,23 +492,45 @@ body {
 
 /* Utility Animations */
 @keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slide-down {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes scale-out {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.9); }
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 }
 
 /* Performance */
@@ -433,9 +541,17 @@ body {
 
 /* Meteors Animation */
 @keyframes meteor {
-  0% { transform: rotate(215deg) translateX(0); opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: rotate(215deg) translateX(-500px); opacity: 0; }
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-500px);
+    opacity: 0;
+  }
 }
 
 .animate-meteor {

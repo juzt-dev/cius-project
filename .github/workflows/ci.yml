@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, "feature/**", "fix/**", "chore/**"]
+    branches: [main, 'feature/**', 'fix/**', 'chore/**']
   pull_request:
     branches: [main]
 
@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: "20"
-  PNPM_VERSION: "9"
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
 
 jobs:
   lint:
@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -60,7 +60,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -79,7 +79,7 @@ jobs:
       # Required for Prisma generate during build
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-      NEXTAUTH_URL: "http://localhost:3000"
+      NEXTAUTH_URL: 'http://localhost:3000'
       # Optional services (graceful degradation)
       UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
       UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
@@ -97,7 +97,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

@@ -1,4 +1,16 @@
-import { Code, Cpu, Globe, Star, ArrowRight, Link as LinkIcon, Circle, Zap, Command, Layers, GitBranch } from '@geist-ui/react-icons';
+import {
+  Code,
+  Cpu,
+  Globe,
+  Star,
+  ArrowRight,
+  Link as LinkIcon,
+  Circle,
+  Zap,
+  Command,
+  Layers,
+  GitBranch,
+} from '@geist-ui/react-icons';
 import type { ComponentType } from 'react';
 
 export interface FocusArea {
@@ -111,4 +123,3 @@ export const AI_FEATURES: AIFeature[] = [
     description: 'Gets better with every interaction',
   },
 ];
-
