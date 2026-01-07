@@ -2,11 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect, useCallback } from 'react';
-import { useTheme } from 'next-themes';
+import { useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Download } from '@geist-ui/react-icons';
-import { ThemeToggle } from '@/components/common/theme-toggle';
 import { ShimmerButton, ShinyText } from '@/components/animations';
 import { cn } from '@/lib/utils';
 
@@ -113,13 +111,7 @@ function MobileMenu({ isOpen, onClose, pathname, isHovered, onHoverChange }: Mob
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -129,11 +121,8 @@ export default function Header() {
     setIsMenuOpen(false);
   }, []);
 
-  const logoSrc = mounted
-    ? resolvedTheme === 'dark'
-      ? '/Logo-dark mode.svg'
-      : '/Logo-Light mode.svg'
-    : null;
+  // Always use dark logo since we're forcing dark mode
+  const logoSrc = '/Logo-dark mode.svg';
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -162,8 +151,8 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-primary',
-                    isActive ? 'text-primary' : 'text-foreground'
+                    'text-sm font-medium transition-colors hover:text-primary nav-glow',
+                    isActive ? 'text-primary nav-glow-active' : 'text-foreground'
                   )}
                 >
                   {item.name}
@@ -172,9 +161,8 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Right Side: Theme Toggle + Get Report Button + Mobile Menu */}
+          {/* Right Side: Get Report Button + Mobile Menu */}
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <Link href="/report" className="hidden md:inline-flex">
               <ShimmerButton
                 {...SHIMMER_BUTTON_CONFIG}

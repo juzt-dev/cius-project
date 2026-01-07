@@ -11,7 +11,12 @@ const fadeInUp = {
 
 export function WhoWeAre() {
   return (
-    <section className="relative py-24 md:py-32 lg:py-40 bg-muted/30 overflow-hidden">
+    <section
+      className="relative py-24 md:py-32 lg:py-40 overflow-hidden"
+      style={{
+        backgroundColor: 'hsl(0 0% 1.5%)', // Darker than --background (3.9%) -> 1.5%
+      }}
+    >
       {/* Background Decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
 
@@ -26,7 +31,7 @@ export function WhoWeAre() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm hover:bg-primary/20 transition-colors duration-300">
             <Star className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Who We Are</span>
+            <span className="text-sm font-medium text-primary"> Introduction </span>
           </div>
         </motion.div>
 

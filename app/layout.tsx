@@ -7,10 +7,12 @@ import { ScrollProgress } from '@/components/common/ScrollProgress';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { LenisProvider } from '@/components/providers/lenis-provider';
 
+// Inter font as fallback for PP Neutral
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  fallback: ['system-ui', 'sans-serif'],
 });
 
 const manrope = Manrope({
@@ -89,7 +91,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            enableSystem
+            forcedTheme="dark"
+            enableSystem={false}
             disableTransitionOnChange
           >
             <ScrollProgress />

@@ -84,7 +84,8 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        // PP Neue Montreal is primary, Inter is fallback (loaded via Next.js font loader)
+        sans: ['PP Neue Montreal', 'var(--font-inter)', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
       },
       keyframes: {

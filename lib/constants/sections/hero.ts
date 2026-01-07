@@ -12,5 +12,3 @@ export const DEFAULT_HERO_COPY: HeroCopy = {
   subtext:
     "A technology studio at the intersection of design, AI, and Web3 building products that shape tomorrow's digital universe.",
 };
-
-

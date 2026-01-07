@@ -123,6 +123,15 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Gradient Fade Out - Blur boundary between sections */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[3434px] h-[194px] pointer-events-none z-[5]"
+        style={{
+          background: 'linear-gradient(180deg, rgba(2, 2, 2, 0) 0%, hsl(0 0% 1.5%) 100%)',
+        }}
+        aria-hidden="true"
+      />
     </section>
   );
 }
