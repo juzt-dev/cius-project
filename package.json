@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "NODE_OPTIONS='--experimental-require-module' prisma generate && next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
@@ -23,7 +23,9 @@
     "docs": "./scripts/show-cleanup-cheatsheet.sh",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -42,6 +44,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
     "@upstash/redis": "^1.36.0",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
@@ -63,13 +66,21 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@prisma/client": "^7.2.0",
+    "@storybook/addon-essentials": "8.6.15",
+    "@storybook/addon-onboarding": "8.6.15",
+    "@storybook/blocks": "8.6.15",
+    "@storybook/react": "8.6.15",
+    "@storybook/react-vite": "8",
+    "@storybook/test": "^8.6.15",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",
+    "@types/bcryptjs": "^3.0.0",
     "@types/node": "^25.0.3",
     "@types/pg": "^8.16.0",
     "@types/react": "^19.2.7",
@@ -86,7 +97,9 @@
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
     "prisma": "^7.2.0",
+    "storybook": "8.6.15",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16",
     "vitest-mock-extended": "^3.1.0"
@@ -95,5 +108,13 @@
     "overrides": {
       "@prisma/dev": "0.19.1"
     }
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }

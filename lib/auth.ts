@@ -1,5 +1,7 @@
 import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import { prisma } from '@/lib/prisma';
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
@@ -7,6 +9,13 @@ declare module 'next-auth' {
       id: string;
       role?: string;
     } & DefaultSession['user'];
+  }
+
+  interface User {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
   }
 }
 
@@ -19,17 +28,48 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        // TODO: Implement your authentication logic here
-        // This is just a placeholder
-        if (credentials?.email === 'admin@cius.com' && credentials?.password === 'admin123') {
+        try {
+          // Validate credentials exist
+          if (!credentials?.email || !credentials?.password) {
+            console.error('Missing email or password');
+            return null;
+          }
+
+          // Look up user in database
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          });
+
+          if (!user) {
+            console.error('User not found:', credentials.email);
+            return null;
+          }
+
+          // Check if user is active
+          if (!user.isActive) {
+            console.error('User account is inactive:', credentials.email);
+            return null;
+          }
+
+          // Verify password with bcrypt
+          const isPasswordValid = await bcrypt.compare(credentials.password, user.passwordHash);
+
+          if (!isPasswordValid) {
+            console.error('Invalid password for user:', credentials.email);
+            return null;
+          }
+
+          // Return user object (excluding password hash)
           return {
-            id: '1',
-            email: credentials.email,
-            name: 'Admin',
-            role: 'admin',
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
           };
+        } catch (error) {
+          console.error('Authentication error:', error);
+          return null;
         }
-        return null;
       },
     }),
   ],
@@ -45,7 +85,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },
