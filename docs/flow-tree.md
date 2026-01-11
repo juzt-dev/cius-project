@@ -1,6 +1,6 @@
 # CIUS Web App - Flow Tree
 
-> Tài liệu mô tả cấu trúc navigation và component hierarchy của website.
+> Docs describe how navbar work 
 
 ## 📍 Page Routes
 
@@ -165,13 +165,13 @@ flowchart TB
 
 ## 📝 Notes for Redesign
 
-### Cần giữ lại
+### Keep
 
 - [ ] Route structure
 - [ ] Provider hierarchy (Lenis, Theme)
 - [ ] Component naming conventions
 
-### Có thể thay đổi
+### Can change
 
 - [ ] Section order trong HomePage
 - [ ] Navigation menu items
@@ -179,10 +179,10 @@ flowchart TB
 - [ ] Animation styles
 - [ ] Component visual design
 
-### Cần tạo mới
+### New Create
 
 - [ ] (Thêm những thứ cần tạo mới ở đây)
 
 ---
 
-_Cập nhật lần cuối: 2026-01-10_
+_Last update: 2026-01-10_
