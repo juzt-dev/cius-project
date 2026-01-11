@@ -69,25 +69,28 @@ export function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-primary" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
-              <span className="text-gray-300 font-normal"> Introducing Business </span>
+              <span className="text-gray-300 font-normal">
+                100% API Test Coverage. Zero Type-Unsafe Code.
+              </span>
             </div>
 
             {/* H1 with BlurReveal */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-4 sm:mb-5 leading-tight font-[family-name:var(--font-manrope)] relative w-full max-w-5xl">
               <span className="block bg-clip-text text-transparent font-light py-2 sm:py-3 md:py-4 px-2 sm:px-4 relative z-[1] -mb-2 sm:-mb-3 md:-mb-4 bg-gradient-to-b from-white to-gray-400">
-                <BlurReveal delay={0.0}>Engineering</BlurReveal>
+                <BlurReveal delay={0.0}>Ship&nbsp;with&nbsp;</BlurReveal>
+                <BlurReveal delay={0.1}>Confidence.</BlurReveal>
               </span>
               <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-normal bg-clip-text text-transparent font-[family-name:var(--font-instrument-serif)] italic relative z-[2] bg-gradient-to-l from-primary to-primary/20">
-                <BlurReveal delay={0.1}>the&nbsp;</BlurReveal>
-                <BlurReveal delay={0.2}>Next&nbsp;</BlurReveal>
-                <BlurReveal delay={0.3}>Horizon.</BlurReveal>
+                <BlurReveal delay={0.2}>Not&nbsp;with&nbsp;</BlurReveal>
+                <BlurReveal delay={0.3}>Crossed&nbsp;Fingers.</BlurReveal>
               </span>
             </h1>
 
             {/* Subtext */}
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
-              A technology studio at the intersection of design, AI, and Web3 building products that
-              shape tomorrow's digital universe.
+              Your next enterprise application, built with production infrastructure from day one.
+              TypeScript strict mode, Zod validation, Prisma type-safety. Bugs caught at
+              compile-time.
             </p>
 
             {/* CTAs */}
@@ -103,11 +106,11 @@ export function Hero() {
                   'shadow-[inset_0_1px_4px_rgba(255,255,255,0.25),inset_0_-1px_4px_rgba(0,0,0,0.15)]'
                 )}
               >
-                Get in touch
+                View Projects
               </Link>
 
               <Link
-                href="/products"
+                href="/contact"
                 className={cn(
                   'inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-5 md:px-6',
                   'rounded-full text-sm font-medium',
@@ -117,8 +120,34 @@ export function Hero() {
                   'shadow-[inset_0_1px_4px_rgba(255,255,255,0.15),inset_0_-1px_4px_rgba(0,0,0,0.1)]'
                 )}
               >
-                See products
+                Talk to Us
               </Link>
+            </div>
+
+            {/* Trust Strip */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm text-white/60 px-4">
+              <span className="inline-flex items-center gap-1.5">
+                <svg
+                  className="w-3.5 h-3.5 text-green-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                243 Tests Passing
+              </span>
+              <span className="text-white/30">•</span>
+              <span>TypeScript Strict Mode</span>
+              <span className="text-white/30">•</span>
+              <span>100% API Coverage</span>
+              <span className="text-white/30">•</span>
+              <span>Prisma 7 + Next.js 16</span>
             </div>
           </div>
         </div>
