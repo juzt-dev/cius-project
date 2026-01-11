@@ -54,6 +54,7 @@ prisma/migrations/
 # Claude AI (local development only)
 .claude/
 release-manifest.json
-.plan/
+.plan
+plans/
 
 *storybook.log
