@@ -5,6 +5,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { cache } from './redis';
+import { redisLogger } from './logger';
 
 // Mock @upstash/redis
 const mockGet = vi.fn();
@@ -19,6 +20,14 @@ vi.mock('@upstash/redis', () => ({
     del: mockDel,
     keys: mockKeys,
   })),
+}));
+
+// Mock logger
+vi.mock('./logger', () => ({
+  redisLogger: {
+    debug: vi.fn(),
+    error: vi.fn(),
+  },
 }));
 
 describe('Redis Cache Service', () => {
@@ -37,114 +46,82 @@ describe('Redis Cache Service', () => {
 
     describe('cache.get()', () => {
       it('should return null when Redis is not configured', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         const result = await cache.get<string>('test-key');
 
         expect(result).toBeNull();
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping cache GET:',
-          'test-key'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { key: 'test-key' },
+          'Redis not configured, skipping cache GET'
         );
-
-        consoleSpy.mockRestore();
       });
 
       it('should log the key being requested', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.get<number>('user:123');
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping cache GET:',
-          'user:123'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { key: 'user:123' },
+          'Redis not configured, skipping cache GET'
         );
-
-        consoleSpy.mockRestore();
       });
     });
 
     describe('cache.set()', () => {
       it('should skip SET when Redis is not configured', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.set('test-key', { data: 'value' });
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping cache SET:',
-          'test-key'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { key: 'test-key' },
+          'Redis not configured, skipping cache SET'
         );
-
-        consoleSpy.mockRestore();
       });
 
       it('should skip SET with expiration when Redis is not configured', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.set('session:abc', { userId: 123 }, 3600);
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping cache SET:',
-          'session:abc'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { key: 'session:abc' },
+          'Redis not configured, skipping cache SET'
         );
-
-        consoleSpy.mockRestore();
       });
     });
 
     describe('cache.del()', () => {
       it('should skip DEL when Redis is not configured', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.del('test-key');
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping cache DEL:',
-          'test-key'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { key: 'test-key' },
+          'Redis not configured, skipping cache DEL'
         );
-
-        consoleSpy.mockRestore();
       });
 
       it('should log the key being deleted', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.del('user:456');
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping cache DEL:',
-          'user:456'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { key: 'user:456' },
+          'Redis not configured, skipping cache DEL'
         );
-
-        consoleSpy.mockRestore();
       });
     });
 
     describe('cache.invalidatePattern()', () => {
       it('should skip pattern invalidation when Redis is not configured', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.invalidatePattern('user:*');
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping invalidatePattern:',
-          'user:*'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { pattern: 'user:*' },
+          'Redis not configured, skipping invalidatePattern'
         );
-
-        consoleSpy.mockRestore();
       });
 
       it('should log the pattern being invalidated', async () => {
-        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-
         await cache.invalidatePattern('session:*');
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Redis not configured, skipping invalidatePattern:',
-          'session:*'
+        expect(redisLogger.debug).toHaveBeenCalledWith(
+          { pattern: 'session:*' },
+          'Redis not configured, skipping invalidatePattern'
         );
-
-        consoleSpy.mockRestore();
       });
     });
   });

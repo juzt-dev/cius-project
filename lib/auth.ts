@@ -2,6 +2,7 @@ import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
+import { authLogger } from '@/lib/logger';
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
@@ -31,7 +32,7 @@ export const authOptions: NextAuthOptions = {
         try {
           // Validate credentials exist
           if (!credentials?.email || !credentials?.password) {
-            console.error('Missing email or password');
+            authLogger.error('Missing email or password');
             return null;
           }
 
@@ -41,13 +42,13 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) {
-            console.error('User not found:', credentials.email);
+            authLogger.error({ email: credentials.email }, 'User not found');
             return null;
           }
 
           // Check if user is active
           if (!user.isActive) {
-            console.error('User account is inactive:', credentials.email);
+            authLogger.error({ email: credentials.email }, 'User account is inactive');
             return null;
           }
 
@@ -55,7 +56,7 @@ export const authOptions: NextAuthOptions = {
           const isPasswordValid = await bcrypt.compare(credentials.password, user.passwordHash);
 
           if (!isPasswordValid) {
-            console.error('Invalid password for user:', credentials.email);
+            authLogger.error({ email: credentials.email }, 'Invalid password for user');
             return null;
           }
 
@@ -67,7 +68,7 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
           };
         } catch (error) {
-          console.error('Authentication error:', error);
+          authLogger.error({ error }, 'Authentication error occurred');
           return null;
         }
       },

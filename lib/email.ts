@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { emailLogger } from '@/lib/logger';
 
 // Initialize Resend only if API key is available
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -20,7 +21,7 @@ export async function sendEmail({
 }: EmailOptions) {
   // If Resend is not configured, log and return success (for development/build)
   if (!resend) {
-    console.log('Email would be sent:', { to, subject, from });
+    emailLogger.info({ to, subject, from }, 'Email would be sent (dev mode)');
     return { success: true, data: { id: 'dev-mode' } };
   }
 
@@ -35,7 +36,7 @@ export async function sendEmail({
 
     return { success: true, data };
   } catch (error) {
-    console.error('Email send error:', error);
+    emailLogger.error({ error, to, subject }, 'Email send failed');
     return { success: false, error };
   }
 }
