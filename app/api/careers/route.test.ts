@@ -6,6 +6,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { POST } from './route';
 
+// Hoist mock objects
+const mockCareersRateLimit = vi.hoisted(() => ({
+  limit: vi.fn(),
+}));
+
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -23,6 +28,12 @@ vi.mock('@/lib/email', () => ({
   },
 }));
 
+// Mock Rate Limiting
+vi.mock('@/lib/rate-limit', () => ({
+  careersRateLimit: mockCareersRateLimit,
+  getClientIp: vi.fn(() => '127.0.0.1'),
+}));
+
 // Import mocked modules
 import { prisma } from '@/lib/prisma';
 import { sendEmail, emailTemplates } from '@/lib/email';
@@ -30,6 +41,15 @@ import { sendEmail, emailTemplates } from '@/lib/email';
 describe('POST /api/careers', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Default: rate limit allows request
+    mockCareersRateLimit.limit.mockResolvedValue({
+      success: true,
+      limit: 5,
+      remaining: 4,
+      reset: Date.now() + 3600000,
+      pending: Promise.resolve(),
+    });
   });
 
   describe('Successful Submissions', () => {
@@ -348,6 +368,88 @@ describe('POST /api/careers', () => {
 
       // Zod optional() only accepts undefined or missing field, not null
       expect(response.status).toBe(400);
+    });
+  });
+
+  describe('Rate Limiting', () => {
+    it('should return 429 when rate limit is exceeded', async () => {
+      mockCareersRateLimit.limit.mockResolvedValueOnce({
+        success: false,
+        limit: 5,
+        remaining: 0,
+        reset: Date.now() + 3600000,
+        pending: Promise.resolve(),
+      });
+
+      const request = new Request('http://localhost:3000/api/careers', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: 'John Doe',
+          email: 'test@example.com',
+          position: 'Developer',
+        }),
+      });
+
+      const response = await POST(request as any);
+      const json = await response.json();
+
+      expect(response.status).toBe(429);
+      expect(json.success).toBe(false);
+      expect(json.message).toBe('Too many requests. Please try again later.');
+      expect(json.limit).toBe(5);
+      expect(json.remaining).toBe(0);
+      expect(json.reset).toBeDefined();
+    });
+
+    it('should include rate limit metadata in 429 response', async () => {
+      const resetTime = Date.now() + 3600000;
+      mockCareersRateLimit.limit.mockResolvedValueOnce({
+        success: false,
+        limit: 5,
+        remaining: 0,
+        reset: resetTime,
+        pending: Promise.resolve(),
+      });
+
+      const request = new Request('http://localhost:3000/api/careers', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: 'Jane Doe',
+          email: 'jane@example.com',
+          position: 'Senior Dev',
+        }),
+      });
+
+      const response = await POST(request as any);
+      const json = await response.json();
+
+      expect(json.limit).toBe(5);
+      expect(json.remaining).toBe(0);
+      expect(json.reset).toBe(resetTime);
+    });
+
+    it('should not call database or email when rate limited', async () => {
+      mockCareersRateLimit.limit.mockResolvedValueOnce({
+        success: false,
+        limit: 5,
+        remaining: 0,
+        reset: Date.now() + 3600000,
+        pending: Promise.resolve(),
+      });
+
+      const request = new Request('http://localhost:3000/api/careers', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: 'John Doe',
+          email: 'test@example.com',
+          position: 'Developer',
+        }),
+      });
+
+      await POST(request as any);
+
+      expect(prisma.career.create).not.toHaveBeenCalled();
+      expect(sendEmail).not.toHaveBeenCalled();
     });
   });
 });

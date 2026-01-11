@@ -6,6 +6,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { POST } from './route';
 
+// Hoist mock objects
+const mockReportRateLimit = vi.hoisted(() => ({
+  limit: vi.fn(),
+}));
+
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -23,6 +28,12 @@ vi.mock('@/lib/email', () => ({
   },
 }));
 
+// Mock Rate Limiting
+vi.mock('@/lib/rate-limit', () => ({
+  reportRateLimit: mockReportRateLimit,
+  getClientIp: vi.fn(() => '127.0.0.1'),
+}));
+
 // Import mocked modules
 import { prisma } from '@/lib/prisma';
 import { sendEmail, emailTemplates } from '@/lib/email';
@@ -30,6 +41,15 @@ import { sendEmail, emailTemplates } from '@/lib/email';
 describe('POST /api/report', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Default: rate limit allows request
+    mockReportRateLimit.limit.mockResolvedValue({
+      success: true,
+      limit: 20,
+      remaining: 19,
+      reset: Date.now() + 3600000,
+      pending: Promise.resolve(),
+    });
   });
 
   describe('Successful Submissions', () => {
@@ -336,6 +356,82 @@ describe('POST /api/report', () => {
 
       const response = await POST(request as any);
       expect(response.status).toBe(201);
+    });
+  });
+
+  describe('Rate Limiting', () => {
+    it('should return 429 when rate limit is exceeded', async () => {
+      mockReportRateLimit.limit.mockResolvedValueOnce({
+        success: false,
+        limit: 20,
+        remaining: 0,
+        reset: Date.now() + 3600000,
+        pending: Promise.resolve(),
+      });
+
+      const request = new Request('http://localhost:3000/api/report', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: 'test@example.com',
+        }),
+      });
+
+      const response = await POST(request as any);
+      const json = await response.json();
+
+      expect(response.status).toBe(429);
+      expect(json.success).toBe(false);
+      expect(json.message).toBe('Too many requests. Please try again later.');
+      expect(json.limit).toBe(20);
+      expect(json.remaining).toBe(0);
+      expect(json.reset).toBeDefined();
+    });
+
+    it('should include rate limit metadata in 429 response', async () => {
+      const resetTime = Date.now() + 3600000;
+      mockReportRateLimit.limit.mockResolvedValueOnce({
+        success: false,
+        limit: 20,
+        remaining: 0,
+        reset: resetTime,
+        pending: Promise.resolve(),
+      });
+
+      const request = new Request('http://localhost:3000/api/report', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: 'user@example.com',
+        }),
+      });
+
+      const response = await POST(request as any);
+      const json = await response.json();
+
+      expect(json.limit).toBe(20);
+      expect(json.remaining).toBe(0);
+      expect(json.reset).toBe(resetTime);
+    });
+
+    it('should not call database or email when rate limited', async () => {
+      mockReportRateLimit.limit.mockResolvedValueOnce({
+        success: false,
+        limit: 20,
+        remaining: 0,
+        reset: Date.now() + 3600000,
+        pending: Promise.resolve(),
+      });
+
+      const request = new Request('http://localhost:3000/api/report', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: 'test@example.com',
+        }),
+      });
+
+      await POST(request as any);
+
+      expect(prisma.reportDownload.create).not.toHaveBeenCalled();
+      expect(sendEmail).not.toHaveBeenCalled();
     });
   });
 });

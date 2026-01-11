@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import { careersRateLimit, getClientIp } from '@/lib/rate-limit';
+import { apiLogger } from '@/lib/logger';
 
 const careerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -12,6 +14,26 @@ const careerSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    if (careersRateLimit) {
+      const ip = getClientIp(request);
+      const { success, limit, remaining, reset } = await careersRateLimit.limit(ip);
+
+      if (!success) {
+        apiLogger.warn({ ip, limit, remaining, reset }, 'Rate limit exceeded for careers API');
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Too many requests. Please try again later.',
+            limit,
+            remaining,
+            reset,
+          },
+          { status: 429 }
+        );
+      }
+    }
+
     const body = await request.json();
 
     // Validate input
@@ -38,7 +60,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, errors: error.issues }, { status: 400 });
     }
 
-    console.error('Career application error:', error);
+    apiLogger.error({ error }, 'Career application error');
     return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
