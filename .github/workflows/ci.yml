@@ -12,12 +12,14 @@ concurrency:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '9'
+  PNPM_VERSION: '10'
 
 jobs:
   lint:
     name: Lint & Format Check
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: 'postgresql://user:password@localhost:5432/test_db'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -45,6 +47,9 @@ jobs:
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
+    env:
+      # Required for Prisma generate during postinstall
+      DATABASE_URL: 'postgresql://user:password@localhost:5432/test_db'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -77,6 +82,8 @@ jobs:
   type-check:
     name: TypeScript Check
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: 'postgresql://user:password@localhost:5432/test_db'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
