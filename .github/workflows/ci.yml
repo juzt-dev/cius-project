@@ -52,7 +52,7 @@ jobs:
       DATABASE_URL: 'postgresql://user:password@localhost:5432/test_db'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -86,7 +86,7 @@ jobs:
       DATABASE_URL: 'postgresql://user:password@localhost:5432/test_db'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -123,7 +123,7 @@ jobs:
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
