@@ -11,9 +11,9 @@
 **Date:** 2026-01-10
 **Description:** Implement "use cache" directive, enable PPR, migrate to Server Actions, add Suspense boundaries
 **Priority:** P1 (High Impact)
-**Implementation Status:** Pending
-**Review Status:** Not Started
-**Effort:** 10 hours
+**Implementation Status:** Partial (Server Actions Complete, PPR/Caching Incomplete)
+**Review Status:** Completed (2026-01-11) - Score 7.8/10
+**Effort:** 10 hours (6h spent, 4h remaining)
 
 ---
 
@@ -328,22 +328,29 @@ curl http://localhost:3000 -v
 
 ## Todo Checklist
 
+**Completed (2026-01-11):**
+
+- [x] Create lib/actions/ directory
+- [x] Migrate contact form to Server Action (lib/actions/contact.ts)
+- [x] Migrate careers form to Server Action (lib/actions/careers.ts)
+- [x] Migrate report form to Server Action (lib/actions/report.ts)
+- [x] Update client components to use Server Actions (3 pages)
+- [x] Add Suspense around Hero particles
+- [x] Create LoadingFallback components (ParticlesSkeleton, ContentSkeleton, CardSkeleton)
+- [x] Write tests for Server Actions (44 tests passing)
+
+**Remaining (4h effort):**
+
 - [ ] Add `experimental.ppr = true` to next.config.mjs
 - [ ] Add `experimental_ppr = true` to app/page.tsx
 - [ ] Audit all async Server Components
 - [ ] Implement unstable_cache for expensive queries
 - [ ] Add cache tags for invalidation
-- [ ] Create lib/actions/ directory
-- [ ] Migrate contact form to Server Action
-- [ ] Migrate careers form to Server Action
-- [ ] Migrate report form to Server Action
-- [ ] Update client components to use Server Actions
-- [ ] Add Suspense around Hero particles
-- [ ] Add Suspense around other async components
-- [ ] Create LoadingFallback components
-- [ ] Test streaming behavior
+- [ ] Test streaming behavior with PPR
 - [ ] Test cache invalidation with revalidateTag()
-- [ ] Write tests for Server Actions
+- [ ] Deprecate API routes OR extract shared service logic
+- [ ] Add field-level error display in form pages
+- [ ] Migrate to useTransition hook (React 19)
 - [ ] Update documentation
 
 ---

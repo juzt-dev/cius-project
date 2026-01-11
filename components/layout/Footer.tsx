@@ -1,8 +1,6 @@
 import Link from 'next/link';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   const footerLinks = {
     product: [
       { name: 'Nova', href: '/products/nova' },
@@ -103,7 +101,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex flex-col items-center md:items-start gap-2">
             <div className="text-sm text-muted-foreground">
-              © {currentYear} CIUSLABS. All rights reserved.
+              © {2026} CIUSLABS. All rights reserved.
             </div>
             <div className="text-xs text-muted-foreground/70 italic">
               Technology · Universe · AI · Mars

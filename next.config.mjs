@@ -8,6 +8,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  cacheComponents: true, // Moved from experimental in Next.js 16.1.1
   images: {
     remotePatterns: [
       {

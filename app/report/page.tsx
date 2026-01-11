@@ -1,15 +1,34 @@
-import type { Metadata } from 'next';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Download Report - CIUS',
-  description: 'Download our latest industry report',
-};
+import { useState } from 'react';
+import { submitReportAction } from '@/lib/actions';
 
 export default function ReportPage() {
+  const [isPending, setIsPending] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsPending(true);
+    setMessage(null);
+
+    const formData = new FormData(event.currentTarget);
+    const result = await submitReportAction(formData);
+
+    setIsPending(false);
+
+    if (result.success) {
+      setMessage({ type: 'success', text: result.message });
+      event.currentTarget.reset();
+    } else {
+      setMessage({ type: 'error', text: result.message });
+    }
+  }
+
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-2xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4">Industry Report 2025</h1>
+        <h1 className="text-4xl font-bold mb-4">Industry Report 2026</h1>
         <p className="text-muted-foreground mb-8">
           Get insights into the latest industry trends and market analysis.
         </p>
@@ -20,20 +39,36 @@ export default function ReportPage() {
             Enter your email to receive the full report in your inbox.
           </p>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <input
                 type="email"
-                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                name="email"
+                required
+                disabled={isPending}
+                className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50"
                 placeholder="your@email.com"
               />
             </div>
 
+            {message && (
+              <div
+                className={`p-4 rounded-lg ${
+                  message.type === 'success'
+                    ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
+                    : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'
+                }`}
+              >
+                {message.text}
+              </div>
+            )}
+
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
+              disabled={isPending}
+              className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Download Report
+              {isPending ? 'Sending...' : 'Download Report'}
             </button>
           </form>
         </div>

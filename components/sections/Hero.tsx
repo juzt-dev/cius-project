@@ -1,11 +1,19 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { useScroll, useTransform, motion } from 'framer-motion';
-import { Particles } from '@/components/magicui';
 import { cn } from '@/lib/utils';
 import { BlurReveal } from '@/components/ui/blur-reveal';
+import { ParticlesSkeleton } from '@/components/common/LoadingFallback';
+
+// Dynamically import Particles for code splitting and Suspense support
+const Particles = dynamic(() => import('@/components/magicui').then((mod) => mod.Particles), {
+  ssr: false,
+  loading: () => <ParticlesSkeleton />,
+});
 
 const PARTICLES_CONFIG = {
   mouseForce: 12,
@@ -40,15 +48,17 @@ export function Hero() {
     >
       {/* Parallax Background */}
       <motion.div style={{ y }} className="absolute inset-0 will-change-transform">
-        <div
-          className="absolute inset-0 w-full h-[120vh]"
-          style={{
-            backgroundImage: 'url(/images/Bg-image.avif)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
+        <div className="absolute inset-0 w-full h-[120vh]">
+          <Image
+            src="/images/Bg-image.avif"
+            alt="Hero background"
+            fill
+            priority
+            quality={90}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
       </motion.div>
 
       {/* Background Overlay */}
@@ -56,7 +66,9 @@ export function Hero() {
 
       {/* LiquidEther Animation */}
       <div className="absolute inset-0 opacity-50 z-[2]">
-        <Particles {...PARTICLES_CONFIG} />
+        <Suspense fallback={<ParticlesSkeleton />}>
+          <Particles {...PARTICLES_CONFIG} />
+        </Suspense>
       </div>
 
       {/* Content */}
